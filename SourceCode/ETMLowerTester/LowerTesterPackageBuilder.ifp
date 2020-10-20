@@ -1,0 +1,324 @@
+﻿
+[Header]
+ProjectFileVersion = 1.1
+[General]
+Program name = ETM Tester
+Program version = 1.0
+Windows 2000 = 0
+Windows XP = 0
+Windows Server 2003 = 0
+Windows Vista = 0
+Windows Server 2008 = 0
+Windows 7 = 1
+Windows 8 = 1
+Windows 10 = 1
+Windows Server 2016 = 0
+DoNotCheckOS = 0
+Company name = Mad4Electronics
+Website = 
+SFA = 0
+DFA = 1
+Comp = 1
+[Graphics]
+Wizard image = <main>
+Header image = <main>
+Show Label = 1
+VisualStylesEnabled = 1
+[Files]
+Installation path = <ProgramFiles>\<Company>\<AppName>\
+Autcip = 1
+[Uninstall]
+Vwau = 0
+Website = https://
+Include uninstaller = 1
+Uninstaller filename = Uninstall
+UseCustomDisplayIcon = 0
+CustomDisplayIcon = <InstallPath>\
+[Licence]
+Licence dialog = 0
+[Finish]
+Sart program = 1
+Reboot computer = 0
+Program = <InstallPath>\LowerTester.exe
+ProgramArguments = 
+[Shortcuts]
+Allowtc = 0
+Shortcut path = <Company>\<AppName>\
+[Serialoptions]
+Allows = 0
+Number = 1
+Mask = #####-#####
+[SplashScreen]
+Image = 
+Sound = 
+Time = 2
+PlaySound = 0
+Allow = 0
+[Build]
+File = D:\HaramConnCarProjectFolder\ETMLowerTester\InstallerLowerTester.exe
+SetupIconPath = C:\Program Files (x86)\solicus\InstallForge\icons\modern.ico
+UninstallIconPath = C:\Program Files (x86)\solicus\InstallForge\icons\modern.ico
+CompressionMethod = 0
+CompressionLevel = 1
+[Updater]
+Allow = 0
+1 = <AppName>
+2 = <AppVersion>
+3 = http://
+4 = http://
+5 = http://
+6 = Update
+Language = 0
+RunProg = 
+RunProgs = 0
+Execdlls = 0
+[Languages]
+1
+[Files/Dirs]
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_bz2.pyd
+92.5 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_ctypes.pyd
+129.5 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_decimal.pyd
+265 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_hashlib.pyd
+38 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_lzma.pyd
+248.5 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_multiprocessing.pyd
+29 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_queue.pyd
+27.5 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_socket.pyd
+75 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\_ssl.pyd
+118 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-console-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-datetime-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-debug-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-errorhandling-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-file-l1-1-0.dll
+14.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-file-l1-2-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-file-l2-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-handle-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-heap-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-interlocked-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-libraryloader-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-localization-l1-2-0.dll
+13.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-memory-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-namedpipe-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-processenvironment-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-processthreads-l1-1-0.dll
+13.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-processthreads-l1-1-1.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-profile-l1-1-0.dll
+10.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-rtlsupport-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-string-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-synch-l1-1-0.dll
+13.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-synch-l1-2-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-sysinfo-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-timezone-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-core-util-l1-1-0.dll
+11.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-conio-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-convert-l1-1-0.dll
+15.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-environment-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-filesystem-l1-1-0.dll
+13.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-heap-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-locale-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-math-l1-1-0.dll
+20.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-process-l1-1-0.dll
+12.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-runtime-l1-1-0.dll
+15.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-stdio-l1-1-0.dll
+17.4 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-string-l1-1-0.dll
+17.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-time-l1-1-0.dll
+13.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\api-ms-win-crt-utility-l1-1-0.dll
+11.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\base_library.zip
+768.8 KB
+zip
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\d3dcompiler_47.dll
+4 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\libcrypto-1_1.dll
+3.2 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\libEGL.dll
+23.1 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\libGLESv2.dll
+3.2 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\libssl-1_1.dll
+670 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\LowerTester.exe
+2.6 MB
+exe
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\LowerTester.exe.manifest
+1 KB
+manifest
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\MSVCP140.dll
+576.3 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\MSVCP140_1.dll
+31 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\opengl32sw.dll
+20 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\pyexpat.pyd
+198 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\python3.dll
+57.5 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\python37.dll
+3.6 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Core.dll
+5.7 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5DBus.dll
+434.6 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Gui.dll
+6.8 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Network.dll
+1.3 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Qml.dll
+3.6 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5QmlModels.dll
+432.6 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Quick.dll
+4 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Svg.dll
+322.1 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5WebSockets.dll
+155.6 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Qt5Widgets.dll
+5.3 MB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\select.pyd
+26.5 KB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\ucrtbase.dll
+987.9 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\unicodedata.pyd
+1 MB
+pyd
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\VCRUNTIME140.dll
+87.6 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\VCRUNTIME140_1.dll
+43.5 KB
+dll
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\PyQt5\
+N/A
+[Folder]
+D:\HaramConnCarProjectFolder\ETMLowerTester\dist\LowerTester\Include\
+N/A
+[Folder]
+[Licence_Begin]
+114
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20\par
+}
+ [Licence_End]
+[Registry]
+[Variables]
+[SCs]
+[IFP_End]
+[Serials]
+[Serials_End]
+[Commands]

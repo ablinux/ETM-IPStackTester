@@ -1,0 +1,2 @@
+C:\Users\AbPandey\AppData\Local\Programs\Python\Python37\Scripts\pyuic5.exe -x EtmTester.ui -o EtmTester.py
+C:\Users\AbPandey\AppData\Local\Programs\Python\Python37\Scripts\pyinstaller --noconfirm --onedir --window --icon "D:/HaramConnCarProjectFolder/ETMLowerTester/logo_bOk_icon.ico" --name "LowerTester"  "D:/HaramConnCarProjectFolder/ETMLowerTester/EtmTesterMain.py"

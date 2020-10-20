@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LowerTester</class>
+ <widget class="QMainWindow" name="LowerTester">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>941</width>
+    <height>906</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Etm Tester</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0" colspan="3">
+     <widget class="QPushButton" name="Button_connect">
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" rowspan="5">
+     <layout class="QGridLayout" name="ServiceGroup">
+      <item row="35" column="2">
+       <widget class="QLabel" name="rcvFwdTotalLength">
+        <property name="text">
+         <string>Length:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="30" column="2">
+       <widget class="QLineEdit" name="rcvFwdMaxFwd">
+        <property name="text">
+         <string>16</string>
+        </property>
+       </widget>
+      </item>
+      <item row="30" column="1">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Max payload len</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QLabel" name="label_7">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Bind?</string>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="1">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Socket ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="2">
+       <widget class="QLineEdit" name="rcvFwdSocketId">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="Button_startTest">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Start Test</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0" colspan="5">
+       <widget class="Line" name="line_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="34" column="2">
+       <widget class="QLabel" name="rcvFwdResult">
+        <property name="text">
+         <string>Result :Unknown Drop Count :##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="2">
+       <widget class="QLabel" name="closeSocketResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="33" column="1">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>Paylaod to send</string>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="2">
+       <widget class="QLineEdit" name="closeSocketID">
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly|Qt::ImhPreferNumbers</set>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="31" column="2">
+       <widget class="QLineEdit" name="rcvFwdMaxLen">
+        <property name="text">
+         <string>16</string>
+        </property>
+       </widget>
+      </item>
+      <item row="31" column="1">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Max Rec len</string>
+        </property>
+       </widget>
+      </item>
+      <item row="41" column="0" colspan="5">
+       <widget class="Line" name="line_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="24" column="1">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Dest Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="2">
+       <widget class="QRadioButton" name="doAbort">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="1">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Abort</string>
+        </property>
+       </widget>
+      </item>
+      <item row="24" column="2">
+       <widget class="QLineEdit" name="sendDataPort">
+        <property name="text">
+         <string>1234</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QLabel" name="label_4">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Local Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QPushButton" name="Button_createAndBind">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Create And Bind</string>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="1">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLabel" name="label_3">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>IP Addr</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="2">
+       <widget class="QLineEdit" name="crAndBindLocalIpAddr">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>fd53:7cb8:383:e::73</string>
+        </property>
+       </widget>
+      </item>
+      <item row="37" column="2">
+       <widget class="QLabel" name="rcvFwdAddr">
+        <property name="text">
+         <string>Address :####:####:####:####:####</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="5">
+       <widget class="Line" name="line_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QLabel" name="label_18">
+        <property name="text">
+         <string>Connection</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="2">
+       <widget class="QCheckBox" name="crAndBindConnection">
+        <property name="text">
+         <string>TCP</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="2">
+       <widget class="QLabel" name="createBindResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##  SocketId:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="0">
+       <widget class="QPushButton" name="Button_closeSocket">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Close Socket</string>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="1">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Socket ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="Button_endTest">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>End Test</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="endTestResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="33" column="2">
+       <widget class="QLineEdit" name="dummyTestPayload">
+        <property name="text">
+         <string>ABCD1234</string>
+        </property>
+       </widget>
+      </item>
+      <item row="22" column="0">
+       <widget class="QPushButton" name="Button_sendData">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Send Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="startTestResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="39" column="1">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>Payload Rcvd</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="2">
+       <widget class="QCheckBox" name="crAndBind_doBind">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="25" column="1">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Socket ID</string>
+        </property>
+       </widget>
+      </item>
+      <item row="29" column="0">
+       <widget class="QPushButton" name="Button_recvAndFwd">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Receive and Forward</string>
+        </property>
+       </widget>
+      </item>
+      <item row="25" column="2">
+       <widget class="QLineEdit" name="sendDataSocId">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+      <item row="27" column="2">
+       <widget class="QLabel" name="sendDataResult">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please note: because of the non-blocking behavior of Service Primitives a positive response does NOT signal the success of the transmission, but the success of issuing the transmission.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="2">
+       <widget class="QLineEdit" name="CrAndBindLocalPort">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>1234</string>
+        </property>
+       </widget>
+      </item>
+      <item row="28" column="0" colspan="5">
+       <widget class="Line" name="line_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="26" column="2">
+       <widget class="QLineEdit" name="sendDataData">
+        <property name="text">
+         <string>ABCDEFGHI</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="5">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="32" column="2">
+       <widget class="QPushButton" name="rcvFwdSendDummy">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This send a dummy data &amp;quot;ABCD1234&amp;quot;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Test</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="5">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="versionGetResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##  Version:##.##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="Button_getVersion">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>GetVersion</string>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="2">
+       <widget class="QLineEdit" name="sendDataDestIP">
+        <property name="text">
+         <string>fd53:7cb8:383:e::73</string>
+        </property>
+       </widget>
+      </item>
+      <item row="36" column="2">
+       <widget class="QLabel" name="rcvFwdSourcePort">
+        <property name="text">
+         <string>SourcePort: ##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="1">
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Dest IP</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="0" colspan="5">
+       <widget class="Line" name="line_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="39" column="2" rowspan="2">
+       <widget class="QLabel" name="rcvFwdpayload">
+        <property name="text">
+         <string>-----------------------------------------------------</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0" colspan="3">
+     <layout class="QGridLayout" name="ConnectGroup">
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="ethAdopter">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ethernet Adopter name EX: Ethernet 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>Ethernet 4</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Eth Adopter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Upper tester IPV6 Address    </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="etmIpAddr">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add Upper Tester IP address (IPV6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="text">
+         <string>fd53:7cb8:383:e::73</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Etm Port</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="portNum">
+        <property name="text">
+         <string>6001</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="myIP">
+        <property name="text">
+         <string>fd53:7cb8:0383:000e:0000:0000:0000:3aa</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>My IpAddress</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="2" column="2" rowspan="5">
+     <widget class="QTextBrowser" name="console">
+      <property name="font">
+       <font>
+        <family>MS UI Gothic</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background:rgb(0, 0, 0)</string>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS UI Gothic'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; color:#00ffff;&quot;&gt;Etm tester Beta v .1.0&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="acceptRichText">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+   <zorder>Button_connect</zorder>
+   <zorder></zorder>
+   <zorder></zorder>
+   <zorder>console</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>941</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuLoad">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="actionAdd_TestCase_Seq"/>
+    <addaction name="actionHide_Console"/>
+    <addaction name="actionShow_Console"/>
+    <addaction name="actionClear_Console"/>
+    <addaction name="actionSave_Console_logs"/>
+   </widget>
+   <addaction name="menuLoad"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAdd_TestCase_Seq">
+   <property name="text">
+    <string>Add TestCase Seq</string>
+   </property>
+  </action>
+  <action name="actionHide_Console">
+   <property name="text">
+    <string>Hide Console</string>
+   </property>
+  </action>
+  <action name="actionShow_Console">
+   <property name="text">
+    <string>Show Console</string>
+   </property>
+  </action>
+  <action name="actionClear_Console">
+   <property name="text">
+    <string>Clear Console</string>
+   </property>
+  </action>
+  <action name="actionSave_Console_logs">
+   <property name="text">
+    <string>Save Console logs</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>Button_connect</tabstop>
+  <tabstop>etmIpAddr</tabstop>
+  <tabstop>ethAdopter</tabstop>
+  <tabstop>myIP</tabstop>
+  <tabstop>portNum</tabstop>
+  <tabstop>Button_closeSocket</tabstop>
+  <tabstop>doAbort</tabstop>
+  <tabstop>Button_sendData</tabstop>
+  <tabstop>sendDataDestIP</tabstop>
+  <tabstop>closeSocketID</tabstop>
+  <tabstop>Button_endTest</tabstop>
+  <tabstop>Button_startTest</tabstop>
+  <tabstop>Button_getVersion</tabstop>
+  <tabstop>crAndBindLocalIpAddr</tabstop>
+  <tabstop>CrAndBindLocalPort</tabstop>
+  <tabstop>Button_createAndBind</tabstop>
+  <tabstop>sendDataSocId</tabstop>
+  <tabstop>Button_recvAndFwd</tabstop>
+  <tabstop>sendDataData</tabstop>
+  <tabstop>sendDataPort</tabstop>
+  <tabstop>rcvFwdSocketId</tabstop>
+  <tabstop>rcvFwdMaxFwd</tabstop>
+  <tabstop>rcvFwdMaxLen</tabstop>
+  <tabstop>rcvFwdSendDummy</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionHide_Console</sender>
+   <signal>triggered()</signal>
+   <receiver>console</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>644</x>
+     <y>494</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_Console</sender>
+   <signal>triggered()</signal>
+   <receiver>console</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>644</x>
+     <y>494</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClear_Console</sender>
+   <signal>triggered()</signal>
+   <receiver>console</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>704</x>
+     <y>494</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
