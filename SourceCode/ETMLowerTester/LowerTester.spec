@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['D:/HaramConnCarProjectFolder/ETMLowerTester/EtmTesterMain.py'],
-             pathex=['D:\\HaramConnCarProjectFolder\\ETMLowerTester'],
+a = Analysis(['D:/HaramConnCarProjectFolder/ETM-IPStackTester/SourceCode/ETMLowerTester/EtmTesterMain.py'],
+             pathex=['D:\\HaramConnCarProjectFolder\\ETM-IPStackTester\\SourceCode\\ETMLowerTester'],
              binaries=[],
              datas=[],
              hiddenimports=[],
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='D:\\HaramConnCarProjectFolder\\ETMLowerTester\\logo_bOk_icon.ico')
+          console=False , icon='D:\\HaramConnCarProjectFolder\\ETM-IPStackTester\\SourceCode\\TMLowerTester\\logo_bOk_icon.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

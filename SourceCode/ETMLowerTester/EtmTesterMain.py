@@ -2,6 +2,7 @@ import ipaddress
 
 #import qdarkstyle
 import qdarkstyle
+from PyQt5.QtWidgets import QFileDialog
 from scapy.all import *
 import ctypes
 import sys
@@ -47,6 +48,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.rcvFwdSendDummy.clicked.connect(lambda:dummySend(self.CrAndBindLocalPort.text(),self.crAndBindLocalIpAddr.text()))
         self.crAndBindConnection.clicked.connect(self.setConnection)
         self.actionSave_Console_logs.triggered.connect(saveConsoleLogs)
+        self.actionSave_Console_logs.setShortcut("Ctrl+s")
 
         '''Menu'''
         self.actionAdd_TestCase_Seq.triggered.connect(getTestCases)
@@ -59,7 +61,6 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
 
     '''Local definitions'''
     def connectIP(self):
-        print("Connecting....")
         self.upperTesterIP = self.etmIpAddr.text()
         self.myIPaddr = self.myIP.text()
         self.EtmPort = self.portNum.text()
@@ -71,10 +72,6 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.Button_closeSocket.setEnabled(True)
         self.Button_recvAndFwd.setEnabled(True)
         self.Button_sendData.setEnabled(True)
-        # print("Upper Tester IPaddress  " + self.upperTesterIP)
-        # print("My IPaddress            " + self.myIPaddr)
-        # print("Upper Tester Port num   " + self.EtmPort)
-        # print("Interface               " + self.interface)
         self.console.setTextColor(QColor(84,255,255))
         self.console.append("Upper Tester IPaddress  " + self.upperTesterIP)
         self.console.append("My IPaddress            " + self.myIPaddr)
@@ -175,7 +172,6 @@ SHUTDOWN =              0x07            #e      e
 
 def ETM_START_TEST():
     global EtmData ,widget
-    # print("Start Test")
     LOG('-------Start Test PID------')
     EtmData.PID = START_TEST
     EtmData.GID = GENERAL
@@ -188,7 +184,6 @@ def ETM_START_TEST():
 def ETM_END_TEST():
     global widget
     LOG('-------End Test------')
-    # print("End Test")
     global EtmData
     EtmData.PID = END_TEST
     EtmData.GID = GENERAL
@@ -288,11 +283,10 @@ def rcvFwd(socketid,maxfwd,maxrcv):
 
 def dummySend(port,address):
     global EtmData, widget
-    print ("Sending Dummy UDP packet to IP address:"+address+"\nPort:"+port+"\nData: ABCD1234")
     port = int(port)
     resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(address)) / UDP(sport=int(widget.EtmPort), dport=port) / "ABCD1234", iface=str(widget.interface),
                timeout=15)
-    if(resp == None):
+    if resp is None:
         return
     resp.show()
     data = resp[Raw].load
@@ -308,12 +302,14 @@ def getTestCases():
 
 def saveConsoleLogs():
     global widget
-    LOG("::Saving console data....")
     str = widget.console.toPlainText()
-    print(str)
-    filename = "log_etm_at{}.txt".format(time.localtime())
-    file = open(filename,"w+")
+    name = QFileDialog.getSaveFileName(widget,'Save File')
+    if name[0] is '':
+        return
+    file = open(name[0],'w+')
     file.write(str)
+    s="File saved at : {}".format(name[0])
+    LOG(s)
 
 def stringSize(s):
     return len(s.encode('utf-8'))
@@ -321,16 +317,15 @@ def stringSize(s):
 def sendToIOC(DataPacket,packetResponse):
     global EtmData,widget
     try:
-        print(widget.upperTesterIP +":"+ widget.interface)
-        # resp = send(IPv6(src=widget.myIPaddr, dst=widget.upperTesterIP) / UDP(sport=widget.EtmPort, dport=widget.EtmPort) / DataPacket, iface=widget.interface,count=1)
-        resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(widget.upperTesterIP)) / UDP(sport=int(widget.EtmPort), dport=int(widget.EtmPort)) / DataPacket, iface=str(widget.interface),
-                   timeout=15)
-        #resp = sr1(IPv6(src="fd53:7cb8:0383:000e:0000:0000:0000:3aa", dst="fd53:7cb8:383:e::73") / UDP(sport=6001, dport=6001) / DataPacket,iface="Ethernet 4", timeout=10)
+        resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(widget.upperTesterIP)) /
+                   UDP(sport=int(widget.EtmPort), dport=int(widget.EtmPort)) /
+                   DataPacket, iface=str(widget.interface),
+                   timeout=10)
         exit = 0
     except :
         LOG_ERROR("Failed to send")
         exit = 1
-    if exit == 0:
+    if exit is 0:
         if(packetResponse != "NO"):
             if(resp == None):
                 LOG_ERROR("Data sent but no response received from tester")
@@ -338,13 +333,13 @@ def sendToIOC(DataPacket,packetResponse):
             data = resp[Raw].load
             etmOut = packetResponse(data)
             LOG("Response from Upper tester.....")
-            LOG(etmOut.show(dump=True))
+            LOG_RESP(etmOut.show(dump=True))
             widget.rawDataParse(etmOut)
         else:
-            LOG("Basic response.")
+            LOG_RESP("Basic response.")
             data = resp[Raw].load
             elsedata= EtmPackets.Etm(data)
-            LOG(elsedata)
+            LOG_RESP(elsedata)
 
 def LOG_ERROR(s):
     global widget
@@ -358,6 +353,11 @@ def LOG(s):
     widget.console.append(s)
     widget.console.setTextColor(QColor(84,255,255))
 
+def LOG_RESP(s):
+    global widget
+    widget.console.setTextColor(QColor(0, 170, 0))
+    widget.console.append(s)
+    widget.console.setTextColor(QColor(84, 255, 255))
 
 if __name__ == '__main__':
     global widget
