@@ -4,6 +4,7 @@ import ipaddress
 import qdarkstyle
 from PyQt5.QtWidgets import QFileDialog
 from scapy.all import *
+import psutil
 import ctypes
 import sys
 
@@ -64,7 +65,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.upperTesterIP = self.etmIpAddr.text()
         self.myIPaddr = self.myIP.text()
         self.EtmPort = self.portNum.text()
-        self.interface = self.ethAdopter.text()
+        self.interface = self.Cbox_EthAdopter.currentText()
         self.Button_createAndBind.setEnabled(True)
         self.Button_startTest.setEnabled(True)
         self.Button_endTest.setEnabled(True)
@@ -76,7 +77,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.console.append("Upper Tester IPaddress  " + self.upperTesterIP)
         self.console.append("My IPaddress            " + self.myIPaddr)
         self.console.append("Upper Tester Port num   " + self.EtmPort)
-        self.console.append("Interface               " + self.interface)
+        self.console.append("Interface               " + self.Cbox_EthAdopter.currentText())
 
     def rawDataParse(self,packetResponse):
         if packetResponse.PID == GET_VERSION and packetResponse.GID == GENERAL:
@@ -322,12 +323,13 @@ def sendToIOC(DataPacket,packetResponse):
                    DataPacket, iface=str(widget.interface),
                    timeout=10)
         exit = 0
-    except :
+    except ValueError as e:
+        LOG_ERROR(e.__str__())
         LOG_ERROR("Failed to send")
         exit = 1
     if exit is 0:
-        if(packetResponse != "NO"):
-            if(resp == None):
+        if packetResponse != "NO":
+            if resp == None:
                 LOG_ERROR("Data sent but no response received from tester")
                 return
             data = resp[Raw].load
@@ -368,5 +370,9 @@ if __name__ == '__main__':
     widget = EtmTesterMain()
     EtmData = EtmPackets.Etm()
     Etm_CreateBindData = EtmPackets.Etm_CreateBind()
+    addrs = psutil.net_if_addrs()
+    newlist = list()
+    for i in addrs.keys():
+        widget.Cbox_EthAdopter.addItem(i)
     widget.show()
     app.exec()

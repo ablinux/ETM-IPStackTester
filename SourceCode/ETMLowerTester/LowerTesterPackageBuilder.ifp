@@ -49,7 +49,7 @@ Allows = 0
 Number = 1000
 Mask = #####-#####-#####-#####
 [SplashScreen]
-Image = 
+Image = C:\Users\AbPandey\Pictures\etmTester.jpg
 Sound = 
 Time = 2
 PlaySound = 0
@@ -82,6 +82,9 @@ D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\Lo
 pyd
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\_decimal.pyd
 265 KB
+pyd
+D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\_elementtree.pyd
+203 KB
 pyd
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\_hashlib.pyd
 38 KB
@@ -234,7 +237,7 @@ D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\Lo
 670 KB
 dll
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\LowerTester.exe
-2.6 MB
+2.8 MB
 exe
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\LowerTester.exe.manifest
 1 KB
@@ -305,6 +308,9 @@ dll
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\Include\
 N/A
 [Folder]
+D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\psutil\
+N/A
+[Folder]
 D:\HaramConnCarProjectFolder\ETM-IPStackTester\SourceCode\ETMLowerTester\dist\LowerTester\PyQt5\
 N/A
 [Folder]
@@ -318,11 +324,11 @@ N/A
 [Variables]
 [SCs]
 Desktop
-Etm Tester
-<InstallPath>\
+LowerTester
+<InstallPath>\LowerTester.exe
 
 
-0
+1
 [IFP_End]
 [Serials]
 [Serials_End]

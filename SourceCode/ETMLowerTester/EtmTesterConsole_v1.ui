@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>941</width>
-    <height>906</height>
+    <height>937</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,13 +20,17 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0" colspan="3">
      <layout class="QGridLayout" name="ConnectGroup">
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="ethAdopter">
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ethernet Adopter name EX: Ethernet 4&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Ethernet 4</string>
+         <string>Upper tester IPV6 Address    </string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Etm Port</string>
         </property>
        </widget>
       </item>
@@ -34,13 +38,6 @@
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Eth Adopter</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Upper tester IPV6 Address    </string>
         </property>
        </widget>
       </item>
@@ -54,17 +51,17 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Etm Port</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="3">
        <widget class="QLineEdit" name="portNum">
         <property name="text">
          <string>6001</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>My IpAddress</string>
         </property>
        </widget>
       </item>
@@ -75,12 +72,8 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>My IpAddress</string>
-        </property>
-       </widget>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="Cbox_EthAdopter"/>
       </item>
      </layout>
     </item>
@@ -116,6 +109,56 @@ p, li { white-space: pre-wrap; }
     </item>
     <item row="2" column="0" rowspan="5">
      <layout class="QGridLayout" name="ServiceGroup">
+      <item row="3" column="0">
+       <widget class="QPushButton" name="Button_startTest">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Start Test</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="versionGetResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##  Version:##.##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="endTestResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="startTestResult">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Result:##</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="Button_endTest">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>End Test</string>
+        </property>
+       </widget>
+      </item>
       <item row="35" column="2">
        <widget class="QLabel" name="rcvFwdResult">
         <property name="text">
@@ -168,40 +211,10 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QPushButton" name="Button_endTest">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>End Test</string>
-        </property>
-       </widget>
-      </item>
       <item row="39" column="2">
        <widget class="QLineEdit" name="dummyTestPayload">
         <property name="text">
          <string>ABCD1234</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="endTestResult">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Result:##</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="startTestResult">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Result:##</string>
         </property>
        </widget>
       </item>
@@ -257,16 +270,6 @@ p, li { white-space: pre-wrap; }
        <widget class="QLineEdit" name="sendDataData">
         <property name="text">
          <string>ABCDEFGHI</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="versionGetResult">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>Result:##  Version:##.##</string>
         </property>
        </widget>
       </item>
@@ -422,16 +425,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="Button_startTest">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Start Test</string>
-        </property>
-       </widget>
-      </item>
       <item row="10" column="1">
        <widget class="QLabel" name="label_7">
         <property name="enabled">
@@ -511,16 +504,6 @@ p, li { white-space: pre-wrap; }
         </property>
        </widget>
       </item>
-      <item row="14" column="0" colspan="5">
-       <widget class="QPushButton" name="Button_createAndBind">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Create And Bind</string>
-        </property>
-       </widget>
-      </item>
       <item row="22" column="0" colspan="5">
        <widget class="QPushButton" name="Button_closeSocket">
         <property name="enabled">
@@ -538,6 +521,16 @@ p, li { white-space: pre-wrap; }
         </property>
         <property name="text">
          <string>Send Data</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0" colspan="5">
+       <widget class="QPushButton" name="Button_createAndBind">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Create And Bind</string>
         </property>
        </widget>
       </item>
@@ -581,7 +574,6 @@ p, li { white-space: pre-wrap; }
     </item>
    </layout>
    <zorder>Button_connect</zorder>
-   <zorder></zorder>
    <zorder></zorder>
    <zorder>console</zorder>
   </widget>
@@ -636,7 +628,6 @@ p, li { white-space: pre-wrap; }
  <tabstops>
   <tabstop>Button_connect</tabstop>
   <tabstop>etmIpAddr</tabstop>
-  <tabstop>ethAdopter</tabstop>
   <tabstop>myIP</tabstop>
   <tabstop>portNum</tabstop>
   <tabstop>doAbort</tabstop>
