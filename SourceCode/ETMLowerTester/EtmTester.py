@@ -15,7 +15,7 @@ class Ui_LowerTester(object):
     def setupUi(self, LowerTester):
         LowerTester.setObjectName("LowerTester")
         LowerTester.setEnabled(True)
-        LowerTester.resize(941, 937)
+        LowerTester.resize(941, 939)
         self.centralwidget = QtWidgets.QWidget(LowerTester)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
@@ -286,11 +286,14 @@ class Ui_LowerTester(object):
         self.actionClear_Console.setObjectName("actionClear_Console")
         self.actionSave_Console_logs = QtWidgets.QAction(LowerTester)
         self.actionSave_Console_logs.setObjectName("actionSave_Console_logs")
+        self.actionReportBug = QtWidgets.QAction(LowerTester)
+        self.actionReportBug.setObjectName("actionReportBug")
         self.menuLoad.addAction(self.actionAdd_TestCase_Seq)
         self.menuLoad.addAction(self.actionHide_Console)
         self.menuLoad.addAction(self.actionShow_Console)
         self.menuLoad.addAction(self.actionClear_Console)
         self.menuLoad.addAction(self.actionSave_Console_logs)
+        self.menuLoad.addAction(self.actionReportBug)
         self.menubar.addAction(self.menuLoad.menuAction())
 
         self.retranslateUi(LowerTester)
@@ -318,7 +321,7 @@ class Ui_LowerTester(object):
 
     def retranslateUi(self, LowerTester):
         _translate = QtCore.QCoreApplication.translate
-        LowerTester.setWindowTitle(_translate("LowerTester", "Etm Tester"))
+        LowerTester.setWindowTitle(_translate("LowerTester", "Etm Tester "))
         self.label.setText(_translate("LowerTester", "Upper tester IPV6 Address    "))
         self.label_6.setText(_translate("LowerTester", "Etm Port"))
         self.label_2.setText(_translate("LowerTester", "Eth Adopter"))
@@ -331,7 +334,7 @@ class Ui_LowerTester(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'MS UI Gothic\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; color:#00ffff;\">Etm tester Beta v .1.0</span></p></body></html>"))
+"<p align=\"justify\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.25pt; color:#00ffff;\">Etm tester Beta v .1.1</span></p></body></html>"))
         self.Button_connect.setText(_translate("LowerTester", "Connect"))
         self.Button_startTest.setText(_translate("LowerTester", "Start Test"))
         self.versionGetResult.setText(_translate("LowerTester", "Result:##  Version:##.##"))
@@ -387,6 +390,7 @@ class Ui_LowerTester(object):
         self.actionShow_Console.setText(_translate("LowerTester", "Show Console"))
         self.actionClear_Console.setText(_translate("LowerTester", "Clear Console"))
         self.actionSave_Console_logs.setText(_translate("LowerTester", "Save Console logs"))
+        self.actionReportBug.setText(_translate("LowerTester", "ReportBug"))
 
 
 if __name__ == "__main__":

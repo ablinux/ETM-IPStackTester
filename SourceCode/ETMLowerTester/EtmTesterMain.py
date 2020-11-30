@@ -7,7 +7,8 @@ from scapy.all import *
 import psutil
 import ctypes
 import sys
-
+import time
+import datetime
 # Creating Test Packet for ETM
 from scapy.layers.inet import UDP
 from scapy.layers.inet6 import IPv6
@@ -50,6 +51,9 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.crAndBindConnection.clicked.connect(self.setConnection)
         self.actionSave_Console_logs.triggered.connect(saveConsoleLogs)
         self.actionSave_Console_logs.setShortcut("Ctrl+s")
+        self.actionClear_Console.setShortcut("ctrl+x")
+        self.actionHide_Console.setShortcut("ctrl+h")
+        self.actionShow_Console.setShortcut("ctrl+j")
 
         '''Menu'''
         self.actionAdd_TestCase_Seq.triggered.connect(getTestCases)
@@ -289,10 +293,9 @@ def dummySend(port,address):
                timeout=15)
     if resp is None:
         return
-    resp.show()
     data = resp[Raw].load
     etmOut = EtmPackets.Etm_RespEventReceiveAndFwd(data)
-    LOG(etmOut)
+    LOG_RESP(etmOut.show(dump=True))
     widget.rcvFwdAddr.setText("Address : "+ipaddress.IPv6Address(etmOut.srcAddr)._explode_shorthand_ip_string())
     widget.rcvFwdSourcePort.setText("SourcePort :"+str(etmOut.srcPort))
     widget.rcvFwdTotalLength.setText("Length : "+str(etmOut.fullLen))
@@ -345,7 +348,9 @@ def sendToIOC(DataPacket,packetResponse):
 
 def LOG_ERROR(s):
     global widget
-    widget.console.setTextColor(QColor(255,0,0))
+    # timeStamp = str(datetime.datetime.now().time())
+    # widget.console.setTextColor(QColor(255,0,0))
+    # widget.console.append("......................At"+timeStamp)
     widget.console.append(s)
     widget.console.setTextColor(QColor(84,255,255))
 
