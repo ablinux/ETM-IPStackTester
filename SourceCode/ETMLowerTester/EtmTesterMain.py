@@ -1,14 +1,8 @@
 import ipaddress
-
-#import qdarkstyle
 import qdarkstyle
 from PyQt5.QtWidgets import QFileDialog
 from scapy.all import *
 import psutil
-import ctypes
-import sys
-import time
-import datetime
 # Creating Test Packet for ETM
 from scapy.layers.inet import UDP
 from scapy.layers.inet6 import IPv6
@@ -66,6 +60,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
 
     '''Local definitions'''
     def connectIP(self):
+        self.EtmServiceTab.setEnabled(True)
         self.upperTesterIP = self.etmIpAddr.text()
         self.myIPaddr = self.myIP.text()
         self.EtmPort = self.portNum.text()
@@ -77,6 +72,8 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.Button_closeSocket.setEnabled(True)
         self.Button_recvAndFwd.setEnabled(True)
         self.Button_sendData.setEnabled(True)
+        self.crAndBindLocalIpAddr.setEnabled(True)
+        self.CrAndBindLocalPort.setEnabled(True)
         self.console.setTextColor(QColor(84,255,255))
         self.console.append("Upper Tester IPaddress  " + self.upperTesterIP)
         self.console.append("My IPaddress            " + self.myIPaddr)
@@ -89,10 +86,10 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
             self.versionGetResult.setText(OUT)
         if packetResponse.PID == END_TEST and packetResponse.GID == GENERAL:
             OUT = "Result : {}".format(RESULT[packetResponse.RID])
-            self.endTestResult.setText(OUT)
+            # self.endTestResult.setText(OUT)
         if packetResponse.PID == START_TEST and packetResponse.GID == GENERAL:
             OUT = "Result : {}".format(RESULT[packetResponse.RID])
-            self.startTestResult.setText(OUT)
+            # self.startTestResult.setText(OUT)
         if packetResponse.PID == CLOSE_SOCKET:
             OUT = "Result : {}".format(RESULT[packetResponse.RID])
             self.closeSocketResult.setText(OUT)
@@ -177,6 +174,8 @@ SHUTDOWN =              0x07            #e      e
 
 def ETM_START_TEST():
     global EtmData ,widget
+    OUT = "Result : ##"
+    # widget.startTestResult.setText(OUT)
     LOG('-------Start Test PID------')
     EtmData.PID = START_TEST
     EtmData.GID = GENERAL
@@ -188,6 +187,8 @@ def ETM_START_TEST():
 
 def ETM_END_TEST():
     global widget
+    OUT = "Result : ##"
+    # widget.endTestResult.setText(OUT)
     LOG('-------End Test------')
     global EtmData
     EtmData.PID = END_TEST
@@ -200,6 +201,8 @@ def ETM_END_TEST():
 
 def getVersion():
     global widget
+    OUT = "Result : ##   Version ##.##"
+    widget.versionGetResult.setText(OUT)
     LOG ("--------Getversion-------")
     global EtmData
     EtmData.GID = GENERAL
@@ -214,6 +217,8 @@ def getVersion():
 def _CREATE_AND_BIND(ip,port,bind):
     global widget
     LOG("-----Create and bind-------")
+    OUT = "Result : ## SocketId : ##"
+    widget.createBindResult.setText(OUT)
     if widget.crAndBindConnection.isChecked()==True:
         CONNECT = _UDP
     else:
@@ -239,6 +244,8 @@ def _CREATE_AND_BIND(ip,port,bind):
 def Send_Data(socketid,dstIp,port,data):
     global widget
     LOG("-----SendData-------")
+    OUT = "Result : ##"
+    widget.sendDataResult.setText(OUT)
     addr = ipaddress.ip_address(dstIp)
     IPlist = addr.exploded
     IPlist = IPlist.split(':')
@@ -261,6 +268,8 @@ def Send_Data(socketid,dstIp,port,data):
 
 def Close_Socket(socketid,abort):
     global widget
+    OUT = "Result : ##"
+    widget.closeSocketResult.setText(OUT)
     LOG("-----Close Socket-------")
     Etm_CloseSocket = EtmPackets.EtmReqSocketClose()
     Etm_CloseSocket.GID = _UDP
@@ -275,6 +284,8 @@ def Close_Socket(socketid,abort):
 def rcvFwd(socketid,maxfwd,maxrcv):
     global widget
     LOG("-----Receive and FWD-------")
+    OUT = "Result : ## Drop Count : ##"
+    widget.rcvFwdResult.setText(OUT)
     Etm_RcvFwd = EtmPackets.Etm_ReceiveAndFwd()
     Etm_RcvFwd.GID = _UDP
     Etm_RcvFwd.PID = RECEIVE_AND_FORWARD
@@ -302,7 +313,7 @@ def dummySend(port,address):
     widget.rcvFwdpayload.setText(str(etmOut.payload))
 
 def getTestCases():
-    LOG("Waiting for Testcases")
+    LOG("Waiting for Test cases")
 
 def saveConsoleLogs():
     global widget
@@ -349,7 +360,7 @@ def sendToIOC(DataPacket,packetResponse):
 def LOG_ERROR(s):
     global widget
     # timeStamp = str(datetime.datetime.now().time())
-    # widget.console.setTextColor(QColor(255,0,0))
+    widget.console.setTextColor(QColor(255,0,0))
     # widget.console.append("......................At"+timeStamp)
     widget.console.append(s)
     widget.console.setTextColor(QColor(84,255,255))
@@ -369,8 +380,8 @@ def LOG_RESP(s):
 if __name__ == '__main__':
     global widget
     app = QtWidgets.QApplication([])
-    # app.setStyle('Fusion')
-    app.setStyleSheet(qdarkstyle.load_stylesheet())
+    app.setStyle('Fusion')
+    # app.setStyleSheet(qdarkstyle.load_stylesheet())
     # app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     widget = EtmTesterMain()
     EtmData = EtmPackets.Etm()
