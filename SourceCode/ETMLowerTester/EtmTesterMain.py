@@ -3,7 +3,6 @@ import qdarkstyle
 from PyQt5.QtWidgets import QFileDialog
 from scapy.all import *
 import psutil
-# Creating Test Packet for ETM
 from scapy.layers.inet import UDP
 from scapy.layers.inet6 import IPv6
 from PyQt5.QtGui import QDoubleValidator, QColor
@@ -24,7 +23,7 @@ RESULT = {
 }
 
 BASE_PACKET_SIZE = 8
-
+Shall_i_SEND = False
 class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
     '''Ui setup'''
     def __init__(self, *args, **kwargs):
@@ -106,12 +105,16 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
             self.rcvFwdResult.setText(OUT)
             self.rcvFwdSendDummy.setEnabled(True)
         pass
+    def closeEvent(self, a0: QtGui.QCloseEvent) :
+        global RUN
+        RUN = False
+        print("UI closed")
 
     '''Public Members'''
     upperTesterIP = "fd53:7cb8:383:e::73"
-    myIPaddr = "fd53:7cb8:0383:000e:0000:0000:0000:3aa"
+    myIPaddr = "fd53:7cb8:0383:000e::3aa"
     interface = "Ethernet 4"
-    EtmPort = 6001
+    EtmPort = 50444
     showRawOutput = None
 
 Etm_CreateBindData = None
@@ -173,7 +176,7 @@ SHUTDOWN =              0x07            #e      e
 
 
 def ETM_START_TEST():
-    global EtmData ,widget
+    global EtmData ,widget,DataPacket,packetResponse,Shall_i_SEND
     OUT = "Result : ##"
     # widget.startTestResult.setText(OUT)
     LOG('-------Start Test PID------')
@@ -182,11 +185,14 @@ def ETM_START_TEST():
     EtmData.Length = 8
     LOG("::Etm ETM_START_TEST Data to be sent....")
     LOG(EtmData.show(dump=True))
-    sendToIOC(EtmData,EtmPackets.Etm)
+    DataPacket = EtmData
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+    # sendToIOC(EtmData,EtmPackets.Etm)
 
 
 def ETM_END_TEST():
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
     OUT = "Result : ##"
     # widget.endTestResult.setText(OUT)
     LOG('-------End Test------')
@@ -196,11 +202,13 @@ def ETM_END_TEST():
     EtmData.Length = 8
     LOG("::Etm ETM_END_TEST Data to be sent....")
     LOG(EtmData.show(dump=True))
-    sendToIOC(EtmData,EtmPackets.Etm)
-
+    # sendToIOC(EtmData,EtmPackets.Etm)
+    DataPacket = EtmData
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
 
 def getVersion():
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
     OUT = "Result : ##   Version ##.##"
     widget.versionGetResult.setText(OUT)
     LOG ("--------Getversion-------")
@@ -210,12 +218,14 @@ def getVersion():
     EtmData.Length = 8
     LOG("::Etm GET_VERSION Data to be sent....")
     LOG(EtmData.show(dump=True))
-    sendToIOC(EtmData,EtmPackets.EtmRespVersion)
-
+    # sendToIOC(EtmData,EtmPackets.EtmRespVersion)
+    DataPacket = EtmData
+    packetResponse = EtmPackets.EtmRespVersion
+    Shall_i_SEND = True
 
 
 def _CREATE_AND_BIND(ip,port,bind):
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
     LOG("-----Create and bind-------")
     OUT = "Result : ## SocketId : ##"
     widget.createBindResult.setText(OUT)
@@ -239,10 +249,15 @@ def _CREATE_AND_BIND(ip,port,bind):
     Etm_CreateBindData.Length = int((8 + (152 / 8)) + 2)
     LOG("::Etm CREATE_AND_BIND Data to be sent....")
     LOG(Etm_CreateBindData.show(dump=True))
-    sendToIOC(Etm_CreateBindData,EtmPackets.EtmRespCreateAndBind)
+    # sendToIOC(Etm_CreateBindData,EtmPackets.EtmRespCreateAndBind)
+    DataPacket = Etm_CreateBindData
+    packetResponse = EtmPackets.EtmRespCreateAndBind
+    Shall_i_SEND = True
 
 def Send_Data(socketid,dstIp,port,data):
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
+    # Clear the send data console logs #
+    widget.sendDataConsole.clear()
     LOG("-----SendData-------")
     OUT = "Result : ##"
     widget.sendDataResult.setText(OUT)
@@ -260,14 +275,26 @@ def Send_Data(socketid,dstIp,port,data):
     Etm_SendData.totalLen = stringSize(data)
     Etm_SendData.destPort = int(port)
     Etm_SendData.destAddr = IPinBytes
+    Etm_SendData.varDataLen = stringSize(data)
     Etm_SendData.Data = data
-    Etm_SendData.Length = (8 + 2 +2+2+16+2+ stringSize(data))
+    # Etm_SendData.Length = (8 + 2 +2+2+16+2+ stringSize(data))
+    Etm_SendData.Length = (8 + 24 + stringSize(data))
     LOG("::size of sendpacket is "+str(Etm_SendData.Length))
     LOG(Etm_SendData.show(dump=True))
-    sendToIOC(Etm_SendData,EtmPackets.Etm)
+    # sendToIOC(Etm_SendData,EtmPackets.Etm)
+    DataPacket = Etm_SendData
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+    BPF_filter = "src host fd53:7cb8:383:e::73 && dst host {} && dst port {} ".format(dstIp,port)
+    print (BPF_filter)
+    t = scapy.sendrecv.AsyncSniffer(count=1,store=True,filter=BPF_filter,prn = lambda x : print_to_send_console(x),iface=widget.interface)
+    t.start()
+    time.sleep(2)
+def print_to_send_console(x):
+    widget.sendDataConsole.append("sport = {}\ndport = {}\nPayload : {}".format(x[UDP].sport,x[UDP].dport,x[Raw].load.hex()))
 
 def Close_Socket(socketid,abort):
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
     OUT = "Result : ##"
     widget.closeSocketResult.setText(OUT)
     LOG("-----Close Socket-------")
@@ -279,10 +306,13 @@ def Close_Socket(socketid,abort):
     Etm_CloseSocket.Length = BASE_PACKET_SIZE + 2 + 1
     LOG("::Etm Close_Socket Data to be sent....")
     LOG(Etm_CloseSocket.show(dump=True))
-    sendToIOC(Etm_CloseSocket, EtmPackets.Etm)
+    # sendToIOC(Etm_CloseSocket, EtmPackets.Etm)
+    DataPacket = Etm_CloseSocket
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
 
 def rcvFwd(socketid,maxfwd,maxrcv):
-    global widget
+    global widget,DataPacket,packetResponse,Shall_i_SEND
     LOG("-----Receive and FWD-------")
     OUT = "Result : ## Drop Count : ##"
     widget.rcvFwdResult.setText(OUT)
@@ -295,7 +325,10 @@ def rcvFwd(socketid,maxfwd,maxrcv):
     Etm_RcvFwd.Length = BASE_PACKET_SIZE + 2 + 2
     LOG("::Etm Receive and FWD Data to be sent....")
     LOG(Etm_RcvFwd.show(dump=True))
-    sendToIOC(Etm_RcvFwd, EtmPackets.Etm_RespReceiveAndFwd)
+    # sendToIOC(Etm_RcvFwd, EtmPackets.Etm_RespReceiveAndFwd)
+    DataPacket = Etm_RcvFwd
+    packetResponse = EtmPackets.Etm_RespReceiveAndFwd
+    Shall_i_SEND = True
 
 def dummySend(port,address):
     global EtmData, widget
@@ -329,33 +362,42 @@ def saveConsoleLogs():
 def stringSize(s):
     return len(s.encode('utf-8'))
 
-def sendToIOC(DataPacket,packetResponse):
-    global EtmData,widget
-    try:
-        resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(widget.upperTesterIP)) /
-                   UDP(sport=int(widget.EtmPort), dport=int(widget.EtmPort)) /
-                   DataPacket, iface=str(widget.interface),
-                   timeout=10)
-        exit = 0
-    except ValueError as e:
-        LOG_ERROR(e.__str__())
-        LOG_ERROR("Failed to send")
-        exit = 1
-    if exit is 0:
-        if packetResponse != "NO":
-            if resp == None:
-                LOG_ERROR("Data sent but no response received from tester")
-                return
-            data = resp[Raw].load
-            etmOut = packetResponse(data)
-            LOG("Response from Upper tester.....")
-            LOG_RESP(etmOut.show(dump=True))
-            widget.rawDataParse(etmOut)
+def sendToIOC():
+    global EtmData,widget,RUN,Shall_i_SEND
+    while RUN == True:
+        if Shall_i_SEND == True:
+            Shall_i_SEND = False
+            try:
+                resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(widget.upperTesterIP)) /
+                           UDP(sport=int(widget.EtmPort), dport=int(widget.EtmPort)) /
+                           DataPacket, iface=str(widget.interface),
+                           timeout=10)
+                exit = 0
+            except ValueError as e:
+                LOG_ERROR(e.__str__())
+                LOG_ERROR("Failed to send")
+                exit = 1
+            if exit is 0:
+                if packetResponse != "NO":
+                    if resp == None:
+                        LOG_ERROR("Data sent but no response received from tester")
+                        continue
+                    data = resp[Raw].load
+                    etmOut = packetResponse(data)
+                    LOG("Response from Upper tester.....")
+                    LOG_RESP(etmOut.show(dump=True))
+                    widget.rawDataParse(etmOut)
+                    ls(resp)
+                    LOG_RESP (data.hex())
+
+                else:
+                    LOG_RESP("Basic response.")
+                    data = resp[Raw].load
+                    elsedata= EtmPackets.Etm(data)
+                    LOG_RESP(elsedata)
         else:
-            LOG_RESP("Basic response.")
-            data = resp[Raw].load
-            elsedata= EtmPackets.Etm(data)
-            LOG_RESP(elsedata)
+            time.sleep(1)
+
 
 def LOG_ERROR(s):
     global widget
@@ -378,9 +420,10 @@ def LOG_RESP(s):
     widget.console.setTextColor(QColor(84, 255, 255))
 
 if __name__ == '__main__':
-    global widget
+    global widget,RUN
+    t1 = threading.Thread(target=sendToIOC, name="Scapy Send thread")
     app = QtWidgets.QApplication([])
-    app.setStyle('Fusion')
+    # app.setStyle('Fusion')
     # app.setStyleSheet(qdarkstyle.load_stylesheet())
     # app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     widget = EtmTesterMain()
@@ -391,4 +434,8 @@ if __name__ == '__main__':
     for i in addrs.keys():
         widget.Cbox_EthAdopter.addItem(i)
     widget.show()
+    RUN = True # start the thread
+    t1.start()
     app.exec()
+    RUN = False
+    t1.join()

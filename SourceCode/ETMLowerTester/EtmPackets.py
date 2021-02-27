@@ -143,6 +143,7 @@ class EtmReqSendData(Packet):
                    XBitField("totalLen", 0, 16),
                    XBitField("destPort", 0, 16),
                    XStrFixedLenField("destAddr", 0, 18),
+                   XBitField("varDataLen",0,16),
                    XStrFixedLenField("Data", 0, 36)
                    ]
 
