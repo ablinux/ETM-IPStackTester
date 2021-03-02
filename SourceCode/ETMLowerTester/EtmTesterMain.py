@@ -35,13 +35,19 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.Button_getVersion.clicked.connect(getVersion)
         self.Button_endTest.clicked.connect(ETM_END_TEST)
         self.Button_startTest.clicked.connect(ETM_START_TEST)
+        self.Button_configureSocket.clicked.connect(CONFIGURE_SOCKET_TEST)
+        self.Button_shutDown.clicked.connect(SHUT_DOWN_TEST)
+        self.Button_tcpConnect.clicked.connect(TCP_CONNECT_TEST)
+        self.Button_listenAccept.clicked.connect(LISTEN_AND_ACCEPT)
         self.Button_createAndBind.clicked.connect(lambda :_CREATE_AND_BIND(self.crAndBindLocalIpAddr.text(),self.CrAndBindLocalPort.text(),self.crAndBind_doBind.isChecked()))
         self.Button_connect.clicked.connect(self.connectIP)
         self.Button_sendData.clicked.connect(lambda : Send_Data(self.sendDataSocId.text(),self.sendDataDestIP.text(),self.sendDataPort.text(),self.sendDataData.text()))
         self.Button_closeSocket.clicked.connect(lambda :Close_Socket(self.closeSocketID.text(),self.doAbort.isChecked()))
         self.Button_recvAndFwd.clicked.connect(lambda :rcvFwd(self.rcvFwdSocketId.text(),self.rcvFwdMaxFwd.text(),self.rcvFwdMaxLen.text()))
         self.rcvFwdSendDummy.clicked.connect(lambda:dummySend(self.CrAndBindLocalPort.text(),self.crAndBindLocalIpAddr.text()))
-        self.crAndBindConnection.clicked.connect(self.setConnection)
+        self.crAndBindConnection.clicked.connect(lambda : self.setConnection(self.crAndBindConnection))
+        self.configureSocketGID.clicked.connect(lambda: self.setConnection(self.configureSocketGID))
+        self.shutDownGID.clicked.connect(lambda: self.setConnection(self.shutDownGID))
         self.actionSave_Console_logs.triggered.connect(saveConsoleLogs)
         self.actionSave_Console_logs.setShortcut("Ctrl+s")
         self.actionClear_Console.setShortcut("ctrl+x")
@@ -51,11 +57,11 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         '''Menu'''
         self.actionAdd_TestCase_Seq.triggered.connect(getTestCases)
 
-    def setConnection(self):
-        if self.crAndBindConnection.isChecked() ==True:
-            self.crAndBindConnection.setText("UDP")
+    def setConnection(self,checkBox):
+        if checkBox.isChecked() ==True:
+            checkBox.setText("UDP")
         else:
-            self.crAndBindConnection.setText("TCP")
+            checkBox.setText("TCP")
 
     '''Local definitions'''
     def connectIP(self):
@@ -92,7 +98,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         if packetResponse.PID == CLOSE_SOCKET:
             OUT = "Result : {}".format(RESULT[packetResponse.RID])
             self.closeSocketResult.setText(OUT)
-        if packetResponse.PID == CREATE_AND_BIND and packetResponse.GID == _UDP:
+        if packetResponse.PID == CREATE_AND_BIND and (packetResponse.GID == _UDP or packetResponse.GID == TCP):
             OUT = "Result : {} SocketId : {}".format(RESULT[packetResponse.RID], packetResponse.SocketId)
             if(packetResponse.RID == 0x0):
                 self.rcvFwdSocketId.setText(str(packetResponse.SocketId))
@@ -174,6 +180,91 @@ CONFIGURE_SOCKET =      0x06            #m      m
 SHUTDOWN =              0x07            #e      e
 #(m= mandatory, o = optional, e = extension)
 
+def TCP_CONNECT_TEST():
+    global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "Result : ##"
+    LOG('-------TCP Connect Test PID------')
+    # Format the Ipv6 address
+    addr = ipaddress.ip_address(widget.tcpConnectDestIP.text())
+    IPlist = addr.exploded
+    IPlist = IPlist.split(':')
+    IPaddrString = ' '.join([str(elem) for elem in IPlist])
+    IPaddrString = '0010' + IPaddrString
+    IPinBytes = bytes.fromhex(IPaddrString)
+
+    Etm_CONNECT = EtmPackets.Etm_TCPConnect()
+    Etm_CONNECT.PID = CONNECT
+    Etm_CONNECT.GID = TCP
+    Etm_CONNECT.Length = 12
+    Etm_CONNECT.socketId = int(widget.tcpConnectSocketID.text())
+    Etm_CONNECT.destPort = int(widget.tcpConnectDestPort.text())
+    Etm_CONNECT.destAddress =IPinBytes
+    LOG("::Etm TCP Connect Data to be sent....")
+    LOG(Etm_CONNECT.show(dump=True))
+    DataPacket = Etm_CONNECT
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+
+def LISTEN_AND_ACCEPT():
+    global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "Result : ##"
+    LOG('-------LISTEN AND ACCEPT Test PID------')
+
+    Etm_ListenAccept = EtmPackets.Etm_ListenAcceptPacket()
+    Etm_ListenAccept.PID = 4
+    Etm_ListenAccept.GID = TCP
+    Etm_ListenAccept.Length = 8 + 4
+    Etm_ListenAccept.listenSocketId = int(widget.listenAcceptSocketID.text())
+    Etm_ListenAccept.maxCon = int(widget.listenAcceptMaxConn.text())
+    LOG("::Etm TCP Connect Data to be sent....")
+    LOG(Etm_ListenAccept.show(dump=True))
+    DataPacket = Etm_ListenAccept
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+
+def CONFIGURE_SOCKET_TEST():
+    global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "Result : ##"
+    LOG('-------CONFIGURE SOCKET Test PID------')
+    if widget.configureSocketGID.isChecked() == True:
+        GID_CONNECT = _UDP
+    else:
+        GID_CONNECT = TCP
+
+    Etm_ConfigureSocket = EtmPackets.Etm_ConfigureSocket()
+    Etm_ConfigureSocket.PID = CONFIGURE_SOCKET
+    Etm_ConfigureSocket.GID = GID_CONNECT
+    Etm_ConfigureSocket.Length = 12 + stringSize(widget.configureSocketParmValue.text())
+    Etm_ConfigureSocket.socketId = int(widget.configureSocketSocketID.text())
+    Etm_ConfigureSocket.paramId = int(widget.CBox_configureSocketParamIDs.currentIndex())
+    Etm_ConfigureSocket.varDataLen = 1
+    Etm_ConfigureSocket.paramVal = int(widget.configureSocketParmValue.text())
+
+    LOG("::Etm CONFIGURE SOCKET to be sent....")
+    LOG(Etm_ConfigureSocket.show(dump=True))
+    DataPacket = Etm_ConfigureSocket
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+
+def SHUT_DOWN_TEST():
+    global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
+    LOG('-------Shut Down SOCKET Test PID------')
+    if widget.shutDownGID.isChecked() == True:
+        GID_CONNECT = _UDP
+    else:
+        GID_CONNECT = TCP
+    Etm_ShutDownPac = EtmPackets.Etm_ShutDown()
+    Etm_ShutDownPac.PID = SHUTDOWN
+    Etm_ShutDownPac.GID = GID_CONNECT
+    Etm_ShutDownPac.Length = 8 + 3
+    Etm_ShutDownPac.socketId = int(widget.shutDownSocketID.text())
+    Etm_ShutDownPac.typeid = int(widget.shutDownType.text())
+
+    LOG("::Etm CONFIGURE SOCKET to be sent....")
+    LOG(Etm_ShutDownPac.show(dump=True))
+    DataPacket = Etm_ShutDownPac
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
 
 def ETM_START_TEST():
     global EtmData ,widget,DataPacket,packetResponse,Shall_i_SEND

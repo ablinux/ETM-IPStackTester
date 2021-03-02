@@ -195,6 +195,96 @@ class Etm_ReceiveAndFwd(Packet):
                    XBitField("maxLen", 0xFFFF, 16),
                    ]
 
+'''
+_______________________________________________________________________________________________________________________
+Etm Packet TCP Connect
+'''
+
+
+class Etm_TCPConnect(Packet):
+    name = "Etm tcp connect Packet"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x02, 7),
+                   XBitField("PID", 0x05, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("socketId", 0x0, 16),
+                   XBitField("destPort", 0x0, 16),
+                   XStrFixedLenField("destAddress", 0x0, 18),
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm Shutdown packet
+'''
+
+
+class Etm_ShutDown(Packet):
+    name = "Etm shut down Packet"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x02, 7),
+                   XBitField("PID", 0x05, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("socketId", 0x0, 16),
+                   XBitField("typeid", 0x0, 16),
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm listen and accept packet
+'''
+
+
+class Etm_ListenAcceptPacket(Packet):
+    name = "Etm listen and accept Packet"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x02, 7),
+                   XBitField("PID", 0x05, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("listenSocketId", 0x0, 16),
+                   XBitField("maxCon", 0x0, 16),
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm Packet Configure Socket
+'''
+
+
+class Etm_ConfigureSocket(Packet):
+    name = "Etm Configure soket Packet"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x00, 7),
+                   XBitField("PID", 0x00, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("socketId", 0x0, 16),
+                   XBitField("paramId", 0x0, 16),
+                   XBitField("varDataLen", 0, 16),
+                   XBitField("paramVal", 0x0, 8),
+                   ]
 
 '''
 _______________________________________________________________________________________________________________________
