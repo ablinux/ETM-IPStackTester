@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LowerTester</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -30,7 +30,7 @@
           </font>
          </property>
          <property name="text">
-          <string>fd53:7cb8:0383:000e::3aa</string>
+          <string>FD53:7CB8:0383:E::3AA</string>
          </property>
         </widget>
        </item>
@@ -111,7 +111,7 @@
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add Upper Tester IP address (IPV6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
-          <string>fd53:7cb8:383:e::73</string>
+          <string>FD53:7CB8:383:E::73</string>
          </property>
         </widget>
        </item>

@@ -513,16 +513,16 @@ class Ui_LowerTester(object):
 
     def retranslateUi(self, LowerTester):
         _translate = QtCore.QCoreApplication.translate
-        LowerTester.setWindowTitle(_translate("LowerTester", "MainWindow"))
+        LowerTester.setWindowTitle(_translate("LowerTester", "LowerTester"))
         self.groupBox.setTitle(_translate("LowerTester", "Settings"))
-        self.myIP.setText(_translate("LowerTester", "fd53:7cb8:0383:000e::3aa"))
+        self.myIP.setText(_translate("LowerTester", "FD53:7CB8:0383:E::3AA"))
         self.label.setText(_translate("LowerTester", "Upper tester Address    "))
         self.label_2.setText(_translate("LowerTester", "Eth Adopter"))
         self.portNum.setText(_translate("LowerTester", "50444"))
         self.label_6.setText(_translate("LowerTester", "Etm Port"))
         self.Button_connect.setText(_translate("LowerTester", "Connect"))
         self.etmIpAddr.setToolTip(_translate("LowerTester", "<html><head/><body><p>Add Upper Tester IP address (IPV6)</p></body></html>"))
-        self.etmIpAddr.setText(_translate("LowerTester", "fd53:7cb8:383:e::73"))
+        self.etmIpAddr.setText(_translate("LowerTester", "FD53:7CB8:383:E::73"))
         self.label_5.setText(_translate("LowerTester", "My IpAddress"))
         self.groupBox_2.setTitle(_translate("LowerTester", "Etm Services"))
         self.Button_startTest.setText(_translate("LowerTester", "Start Test"))

@@ -1,12 +1,11 @@
 import ipaddress
-import qdarkstyle
 from PyQt5.QtWidgets import QFileDialog
 from scapy.all import *
 import psutil
 from scapy.layers.inet import UDP
 from scapy.layers.inet6 import IPv6
-from PyQt5.QtGui import QDoubleValidator, QColor
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import  QColor
+from PyQt5 import QtGui, QtWidgets
 from EtmTester import Ui_LowerTester
 import EtmPackets
 
