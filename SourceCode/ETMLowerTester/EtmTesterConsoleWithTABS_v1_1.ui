@@ -1158,8 +1158,41 @@
          </widget>
          <widget class="QWidget" name="tab_9">
           <attribute name="title">
-           <string>SEND ICMP Req</string>
+           <string>NDP Clear</string>
           </attribute>
+          <widget class="QPushButton" name="Button_NDPClear">
+           <property name="geometry">
+            <rect>
+             <x>30</x>
+             <y>20</y>
+             <width>121</width>
+             <height>101</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Clear NDP Cache</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="NDPClearResult">
+           <property name="geometry">
+            <rect>
+             <x>220</x>
+             <y>60</y>
+             <width>151</width>
+             <height>16</height>
+            </rect>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Result : ##</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">

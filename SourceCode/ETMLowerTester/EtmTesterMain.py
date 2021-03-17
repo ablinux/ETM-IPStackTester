@@ -31,6 +31,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         '''Logo'''
         self.setWindowIcon(QtGui.QIcon('logo.jpg'))
         '''Button connections'''
+        self.Button_NDPClear.clicked.connect(NDP_CLEAR_CACHE)
         self.Button_getVersion.clicked.connect(getVersion)
         self.Button_endTest.clicked.connect(ETM_END_TEST)
         self.Button_startTest.clicked.connect(ETM_START_TEST)
@@ -103,6 +104,9 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
                 self.rcvFwdSocketId.setText(str(packetResponse.SocketId))
             self.createBindResult.setText(OUT)
         if packetResponse.PID == SEND_DATA and packetResponse.GID == _UDP:
+            OUT = "Result : {}".format(RESULT[packetResponse.RID])
+            self.sendDataResult.setText(OUT)
+        if packetResponse.PID == 0xff and packetResponse.GID == NDP:
             OUT = "Result : {}".format(RESULT[packetResponse.RID])
             self.sendDataResult.setText(OUT)
         if packetResponse.PID == RECEIVE_AND_FORWARD and packetResponse.GID == _UDP:
@@ -178,6 +182,20 @@ CONNECT =               0x05#                   m
 CONFIGURE_SOCKET =      0x06            #m      m
 SHUTDOWN =              0x07            #e      e
 #(m= mandatory, o = optional, e = extension)
+
+def NDP_CLEAR_CACHE():
+    global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "Result : ##"
+    # widget.startTestResult.setText(OUT)
+    LOG('-------Start Test PID------')
+    EtmData.PID = 0xff
+    EtmData.GID = NDP
+    EtmData.Length = 8
+    LOG("::Etm ETM_START_TEST Data to be sent....")
+    LOG(EtmData.show(dump=True))
+    DataPacket = EtmData
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
 
 def TCP_CONNECT_TEST():
     global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND

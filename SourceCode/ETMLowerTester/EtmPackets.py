@@ -55,6 +55,27 @@ class Etm(Packet):
 
 '''
 _______________________________________________________________________________________________________________________
+Etm NDP Cache
+'''
+
+
+class Etm_NDPCache(Packet):
+    name = "Etm Packet Etm_NDPCache"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("DAT", 0, 40)
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
 Etm Packet resp version 
 '''
 
