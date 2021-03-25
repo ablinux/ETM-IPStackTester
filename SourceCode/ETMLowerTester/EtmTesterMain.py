@@ -31,6 +31,10 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         '''Logo'''
         self.setWindowIcon(QtGui.QIcon('logo.jpg'))
         '''Button connections'''
+        self.Button_RSQ.clicked.connect(READ_SIGNAL_QUALITY)
+        self.Button_RDR.clicked.connect(READ_DIAG_RESULT)
+        self.Button_activateTestMode.clicked.connect(ACTIVATE_TEST_MODE)
+        self.Button_setPhyMode.clicked.connect(SET_PHY_TX_MODE)
         self.Button_NDPClear.clicked.connect(NDP_CLEAR_CACHE)
         self.Button_getVersion.clicked.connect(getVersion)
         self.Button_endTest.clicked.connect(ETM_END_TEST)
@@ -44,15 +48,21 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.Button_sendData.clicked.connect(lambda : Send_Data(self.sendDataSocId.text(),self.sendDataDestIP.text(),self.sendDataPort.text(),self.sendDataData.text()))
         self.Button_closeSocket.clicked.connect(lambda :Close_Socket(self.closeSocketID.text(),self.doAbort.isChecked()))
         self.Button_recvAndFwd.clicked.connect(lambda :rcvFwd(self.rcvFwdSocketId.text(),self.rcvFwdMaxFwd.text(),self.rcvFwdMaxLen.text()))
-        self.rcvFwdSendDummy.clicked.connect(lambda:dummySend(self.CrAndBindLocalPort.text(),self.crAndBindLocalIpAddr.text()))
         self.crAndBindConnection.clicked.connect(lambda : self.setConnection(self.crAndBindConnection))
         self.configureSocketGID.clicked.connect(lambda: self.setConnection(self.configureSocketGID))
         self.shutDownGID.clicked.connect(lambda: self.setConnection(self.shutDownGID))
         self.actionSave_Console_logs.triggered.connect(saveConsoleLogs)
+
         self.actionSave_Console_logs.setShortcut("Ctrl+s")
+
         self.actionClear_Console.setShortcut("ctrl+x")
+        self.actionClear_Console.triggered.connect(lambda : self.console.clear())
+
         self.actionHide_Console.setShortcut("ctrl+h")
+        self.actionHide_Console.triggered.connect(lambda : self.console.hide())
+
         self.actionShow_Console.setShortcut("ctrl+j")
+        self.actionHide_Console.triggered.connect(lambda: self.console.show())
 
         '''Menu'''
         self.actionAdd_TestCase_Seq.triggered.connect(getTestCases)
@@ -112,7 +122,10 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         if packetResponse.PID == RECEIVE_AND_FORWARD and packetResponse.GID == _UDP:
             OUT = "Result : {} Drop Count : {}".format(RESULT[packetResponse.RID],packetResponse.dropCnt)
             self.rcvFwdResult.setText(OUT)
-            self.rcvFwdSendDummy.setEnabled(True)
+        if packetResponse.PID == _READ_SIGNAL_QUALITY and packetResponse.GID == PHY:
+            self.RSQ_result.setText("{}%".format(packetResponse.sigQuality))
+        if packetResponse.PID == _READ_DIAG_RESULT and packetResponse.GID == PHY:
+            self.RSQ_result.setText(PhyDiagResult[packetResponse.diagResult])
         pass
     def closeEvent(self, a0: QtGui.QCloseEvent) :
         global RUN
@@ -160,6 +173,7 @@ DHCP    =   0x07
 DHCPv6  =   0x08
 ARP     =   0x09
 NDP     =   0x0A
+PHY     =   0x0C
 
 # Service Primitives  PID
 ''' 
@@ -181,7 +195,90 @@ LISTEN_AND_ACCEPT =     0x04#                   m
 CONNECT =               0x05#                   m
 CONFIGURE_SOCKET =      0x06            #m      m
 SHUTDOWN =              0x07            #e      e
+
+#Service Primitives PID Type
+_READ_SIGNAL_QUALITY  =  0x00 #mandatory
+_READ_DIAG_RESULT     =  0x01 #mandatory
+_ACTIVATE_TEST_MODE   =  0x02 #mandatory
+_SET_PHY_TX_MODE      =  0x03 #mandatory
 #(m= mandatory, o = optional, e = extension)
+
+# Result of the cable diagnostics:
+PhyDiagResult = ["Cable diagnostic ok","Cable diagnostic failed","Short circuit detected","Open circuit detected"]
+
+def READ_SIGNAL_QUALITY():
+    global widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "X%"
+    widget.closeSocketResult.setText(OUT)
+    LOG("-----READ_SIGNAL_QUALITY-------")
+    Etm_ReadSignalQuality = EtmPackets.Etm_PHYSignalQuality()
+    Etm_ReadSignalQuality.GID = PHY
+    Etm_ReadSignalQuality.PID = _READ_SIGNAL_QUALITY
+    Etm_ReadSignalQuality.if_name = widget.RSQ_ifName.text()
+    Etm_ReadSignalQuality.Length = BASE_PACKET_SIZE + 3 +  stringSize(widget.RSQ_ifName.text())
+    # 3 = BOM field, + actual text size + 1 = termination field
+    Etm_ReadSignalQuality.if_name_len = 3 +  stringSize(widget.RSQ_ifName.text()) + 1
+    LOG("::Etm Close_Socket Data to be sent....")
+    LOG(Etm_ReadSignalQuality.show(dump=True))
+    DataPacket = Etm_ReadSignalQuality
+    packetResponse = EtmPackets.Etm_Resp_PHYSignalQuality
+    Shall_i_SEND = True
+
+def READ_DIAG_RESULT():
+    global widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "X%"
+    widget.closeSocketResult.setText(OUT)
+    LOG("-----READ_DIAG RESULT-------")
+    Etm_PHYDiag = EtmPackets.Etm_PHYReadDiagResult()
+    Etm_PHYDiag.GID = PHY
+    Etm_PHYDiag.PID = _READ_DIAG_RESULT
+    Etm_PHYDiag.if_name = widget.RDR_ifName.text()
+    Etm_PHYDiag.Length = BASE_PACKET_SIZE + 3 + stringSize(widget.RDR_ifName.text())
+    # 3 = BOM field, + actual text size + 1 = termination field
+    Etm_PHYDiag.if_name_len = 3 + stringSize(widget.RSQ_ifName.text()) + 1
+    LOG("::Etm Close_Socket Data to be sent....")
+    LOG(Etm_PHYDiag.show(dump=True))
+    DataPacket = Etm_PHYDiag
+    packetResponse = EtmPackets.Etm_Resp_PHYReadDiagResult
+    Shall_i_SEND = True
+
+def ACTIVATE_TEST_MODE():
+    global widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "X%"
+    widget.closeSocketResult.setText(OUT)
+    LOG("-----READ_DIAG RESULT-------")
+    Etm_PHYTestMode = EtmPackets.Etm_PHYActivateTestMode()
+    Etm_PHYTestMode.GID = PHY
+    Etm_PHYTestMode.PID = _ACTIVATE_TEST_MODE
+    Etm_PHYTestMode.if_name = widget.activateTest_ifName.text()
+    Etm_PHYTestMode.Length = BASE_PACKET_SIZE + 3 + stringSize(widget.activateTest_ifName.text()) + 1
+    Etm_PHYTestMode.testMode = widget.CBox_activateTestMode.currentIndex()
+    # 3 = BOM field, + actual text size + 1 = termination field
+    Etm_PHYTestMode.if_name_len = 3 + stringSize(widget.RSQ_ifName.text()) + 1
+    LOG("::Etm Close_Socket Data to be sent....")
+    LOG(Etm_PHYTestMode.show(dump=True))
+    DataPacket = Etm_PHYTestMode
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+
+def SET_PHY_TX_MODE():
+    global widget, DataPacket, packetResponse, Shall_i_SEND
+    OUT = "X%"
+    widget.closeSocketResult.setText(OUT)
+    LOG("-----READ_DIAG RESULT-------")
+    Etm_PHYTxMode = EtmPackets.Etm_PHYSetTxMode()
+    Etm_PHYTxMode.GID = PHY
+    Etm_PHYTxMode.PID = _ACTIVATE_TEST_MODE
+    Etm_PHYTxMode.if_name = widget.activateTest_ifName.text()
+    Etm_PHYTxMode.Length = BASE_PACKET_SIZE + 3 + stringSize(widget.activateTest_ifName.text()) + 1
+    Etm_PHYTxMode.txMode = widget.CBox_setPHYMode.currentIndex()
+    # 3 = BOM field, + actual text size + 1 = termination field
+    Etm_PHYTxMode.if_name_len = 3 + stringSize(widget.RSQ_ifName.text()) + 1
+    LOG("::Etm Close_Socket Data to be sent....")
+    LOG(Etm_PHYTxMode.show(dump=True))
+    DataPacket = Etm_PHYTxMode
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
 
 def NDP_CLEAR_CACHE():
     global EtmData, widget, DataPacket, packetResponse, Shall_i_SEND
@@ -296,7 +393,6 @@ def ETM_START_TEST():
     DataPacket = EtmData
     packetResponse = EtmPackets.Etm
     Shall_i_SEND = True
-    # sendToIOC(EtmData,EtmPackets.Etm)
 
 
 def ETM_END_TEST():
@@ -438,20 +534,6 @@ def rcvFwd(socketid,maxfwd,maxrcv):
     packetResponse = EtmPackets.Etm_RespReceiveAndFwd
     Shall_i_SEND = True
 
-def dummySend(port,address):
-    global EtmData, widget
-    port = int(port)
-    resp = sr1(IPv6(src=str(widget.myIPaddr), dst=str(address)) / UDP(sport=int(widget.EtmPort), dport=port) / "ABCD1234", iface=str(widget.interface),
-               timeout=15)
-    if resp is None:
-        return
-    data = resp[Raw].load
-    etmOut = EtmPackets.Etm_RespEventReceiveAndFwd(data)
-    LOG_RESP(etmOut.show(dump=True))
-    widget.rcvFwdAddr.setText("Address : "+ipaddress.IPv6Address(etmOut.srcAddr)._explode_shorthand_ip_string())
-    widget.rcvFwdSourcePort.setText("SourcePort :"+str(etmOut.srcPort))
-    widget.rcvFwdTotalLength.setText("Length : "+str(etmOut.fullLen))
-    widget.rcvFwdpayload.setText(str(etmOut.payload))
 
 def getTestCases():
     LOG("Waiting for Test cases")
@@ -514,18 +596,21 @@ def LOG_ERROR(s):
     # widget.console.append("......................At"+timeStamp)
     widget.console.append(s)
     widget.console.setTextColor(QColor(84,255,255))
+    widget.console.moveCursor(QtGui.QTextCursor.End)
 
 def LOG(s):
     global widget
     widget.console.setTextColor(QColor(84,255,255))
     widget.console.append(s)
     widget.console.setTextColor(QColor(84,255,255))
+    widget.console.moveCursor(QtGui.QTextCursor.End)
 
 def LOG_RESP(s):
     global widget
     widget.console.setTextColor(QColor(0, 170, 0))
     widget.console.append(s)
     widget.console.setTextColor(QColor(84, 255, 255))
+    widget.console.moveCursor(QtGui.QTextCursor.End)
 
 if __name__ == '__main__':
     global widget,RUN

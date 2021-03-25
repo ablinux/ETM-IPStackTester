@@ -73,6 +73,149 @@ class Etm_NDPCache(Packet):
                    XBitField("RID", 0, 8),
                    XBitField("DAT", 0, 40)
                    ]
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Signal Quality
+'''
+class Etm_PHYSignalQuality(Packet):
+    name = "Etm Packet Phy Signal Quality"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   # # Text field is divided into 3 parts 1st complete test len field = BOM+Text+termination
+                   # FieldLenField("ifname_full_len",None,length_of="ifName"),
+                   # # 3rd actual text
+                   # StrLenField("ifName","ABCDEFGH",length_from=lambda pkt:pkt.ifname_full_len)
+                   XBitField("if_name_len",0,16),
+                   XBitField("BOM",0xEFBBBF,24),
+                   StrLenField("if_name","VLAN14"),
+                   XBitField("text_termination", 0, 8),
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Signal Quality Response
+'''
+class Etm_Resp_PHYSignalQuality(Packet):
+    name = "Etm Packet Phy Signal Quality"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("sigQuality",0,8)
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Read Diag result
+'''
+class Etm_PHYReadDiagResult(Packet):
+    name = "Etm Packet Phy read diag result"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   # # Text field is divided into 3 parts 1st complete test len field = BOM+Text+termination
+                   # FieldLenField("ifname_full_len",None,length_of="ifName"),
+                   # # 3rd actual text
+                   # StrLenField("ifName","ABCDEFGH",length_from=lambda pkt:pkt.ifname_full_len)
+                   XBitField("if_name_len",0,16),
+                   XBitField("BOM",0xEFBBBF,24),
+                   StrLenField("if_name","VLAN14"),
+                   XBitField("text_termination", 0, 8),
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Signal Quality Response
+'''
+class Etm_Resp_PHYReadDiagResult(Packet):
+    name = "Etm Packet Phy read diag result response"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("diagResult",0,8)
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Activate PHY Test Mode
+'''
+class Etm_PHYActivateTestMode(Packet):
+    name = "Etm Packet Phy Activate PHY Test Mode"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   # # Text field is divided into 3 parts 1st complete test len field = BOM+Text+termination
+                   # FieldLenField("ifname_full_len",None,length_of="ifName"),
+                   # # 3rd actual text
+                   # StrLenField("ifName","ABCDEFGH",length_from=lambda pkt:pkt.ifname_full_len)
+                   XBitField("if_name_len",0,16),
+                   XBitField("BOM",0xEFBBBF,24),
+                   StrLenField("if_name","VLAN14"),
+                   XBitField("text_termination", 0, 8),
+                   XBitField("testMode", 0x00, 8)
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm PHY Set PHY Tx Mode
+'''
+class Etm_PHYSetTxMode(Packet):
+    name = "Etm Packet Phy Set PHY Tx Mode"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   # # Text field is divided into 3 parts 1st complete test len field = BOM+Text+termination
+                   # FieldLenField("ifname_full_len",None,length_of="ifName"),
+                   # # 3rd actual text
+                   # StrLenField("ifName","ABCDEFGH",length_from=lambda pkt:pkt.ifname_full_len)
+                   XBitField("if_name_len",0,16),
+                   XBitField("BOM",0xEFBBBF,24),
+                   StrLenField("if_name","VLAN14"),
+                   XBitField("text_termination", 0, 8),
+                   XBitField("txMode", 0x00, 8)
+                   ]
 
 '''
 _______________________________________________________________________________________________________________________
