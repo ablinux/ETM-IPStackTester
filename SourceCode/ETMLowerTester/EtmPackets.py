@@ -48,10 +48,37 @@ class Etm(Packet):
                    XBitField("ProtoVersion", 0x01, 8),
                    XBitField("IfaceVersion", 0x01, 8),
                    XBitField("TID", 0, 8),
-                   XBitField("RID", 0, 8),
-                   XBitField("DAT", 0, 40)
+                   XBitField("RID", 0, 8)
+                   # XBitField("DAT", 0, 40)
                    ]
 
+
+'''
+_______________________________________________________________________________________________________________________
+Etm ICMPv6 Echo request
+'''
+class Etm_ICMPEchoRequest(Packet):
+    name = "Etm ICMPv6 Echo request"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   # Interface Name --- begin
+                   XBitField("if_name_len",0,16),
+                   XBitField("BOM",0xEFBBBF,24),
+                   StrLenField("if_name","HCP3_ETHIF_0"),
+                   XBitField("text_termination", 0, 8),
+                   # Interface Name --- End
+                   XStrFixedLenField("destAddr", 0, 18),
+                   XBitField("data_size",0x00,16),
+                   StrLenField("data", "allohaa")
+                   ]
 
 '''
 _______________________________________________________________________________________________________________________
@@ -292,7 +319,7 @@ Etm Packet request send data
 
 
 class EtmReqSendData(Packet):
-    name = "Etm Request send data   "
+    name = "Etm Request send data at UDP"
     fields_desc = [XBitField("ServiceId", 0x0105, 16),
                    XBitField("EVB", 0, 1),
                    XBitField("GID", 0x01, 7),
@@ -307,6 +334,31 @@ class EtmReqSendData(Packet):
                    XBitField("totalLen", 0, 16),
                    XBitField("destPort", 0, 16),
                    XStrFixedLenField("destAddr", 0, 18),
+                   XBitField("varDataLen",0,16),
+                   XStrFixedLenField("Data", 0, 36)
+                   ]
+
+'''
+_______________________________________________________________________________________________________________________
+Etm Packet request send data
+'''
+
+
+class EtmReqSendData_tcp(Packet):
+    name = "Etm Request send data at TCP"
+    fields_desc = [XBitField("ServiceId", 0x0105, 16),
+                   XBitField("EVB", 0, 1),
+                   XBitField("GID", 0x01, 7),
+                   XBitField("PID", 0x01, 8),
+                   XBitField("Length", 16, 32),
+                   XBitField("DontCare", 0, 32),
+                   XBitField("ProtoVersion", 0x01, 8),
+                   XBitField("IfaceVersion", 0x01, 8),
+                   XBitField("TID", 0, 8),
+                   XBitField("RID", 0, 8),
+                   XBitField("socketId", 0, 16),
+                   XBitField("totalLen", 0, 16),
+                   XBitField("flags",0x8,8),
                    XBitField("varDataLen",0,16),
                    XStrFixedLenField("Data", 0, 36)
                    ]

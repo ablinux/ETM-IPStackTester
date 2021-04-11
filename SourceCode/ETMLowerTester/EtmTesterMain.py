@@ -31,6 +31,7 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         '''Logo'''
         self.setWindowIcon(QtGui.QIcon('logo.jpg'))
         '''Button connections'''
+        self.Button_icmpEchoRequest.clicked.connect(ICMPV6_ECHO_REQUEST)
         self.Button_RSQ.clicked.connect(READ_SIGNAL_QUALITY)
         self.Button_RDR.clicked.connect(READ_DIAG_RESULT)
         self.Button_activateTestMode.clicked.connect(ACTIVATE_TEST_MODE)
@@ -52,6 +53,9 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.configureSocketGID.clicked.connect(lambda: self.setConnection(self.configureSocketGID))
         self.shutDownGID.clicked.connect(lambda: self.setConnection(self.shutDownGID))
         self.actionSave_Console_logs.triggered.connect(saveConsoleLogs)
+        self.sendData_udp.setChecked(True) # default value
+        self.label_tcpflag.hide()
+        self.CBox_sendData_tcp_flag.hide()
 
         self.actionSave_Console_logs.setShortcut("Ctrl+s")
 
@@ -76,6 +80,16 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
     '''Local definitions'''
     def connectIP(self):
         self.EtmServiceTab.setEnabled(True)
+        try:
+            ipaddress.ip_address(self.etmIpAddr.text())
+        except:
+            LOG_ERROR("Invalid Etm IP Address")
+            return
+        try:
+            ipaddress.ip_address(self.myIP.text())
+        except:
+            LOG_ERROR("Invalid myIP IP Address")
+            return
         self.upperTesterIP = self.etmIpAddr.text()
         self.myIPaddr = self.myIP.text()
         self.EtmPort = self.portNum.text()
@@ -90,10 +104,10 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
         self.crAndBindLocalIpAddr.setEnabled(True)
         self.CrAndBindLocalPort.setEnabled(True)
         self.console.setTextColor(QColor(84,255,255))
-        self.console.append("Upper Tester IPaddress  " + self.upperTesterIP)
-        self.console.append("My IPaddress            " + self.myIPaddr)
-        self.console.append("Upper Tester Port num   " + self.EtmPort)
-        self.console.append("Interface               " + self.Cbox_EthAdopter.currentText())
+        self.console.append("Upper Tester IPaddress         {}".format(self.upperTesterIP))
+        self.console.append("My IPaddress                   {}".format(self.myIPaddr))
+        self.console.append("Upper Tester Port num          {}".format(self.EtmPort))
+        self.console.append("Interface                      {}".format(self.Cbox_EthAdopter.currentText()))
 
     def rawDataParse(self,packetResponse):
         if packetResponse.PID == GET_VERSION and packetResponse.GID == GENERAL:
@@ -123,10 +137,27 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
             OUT = "Result : {} Drop Count : {}".format(RESULT[packetResponse.RID],packetResponse.dropCnt)
             self.rcvFwdResult.setText(OUT)
         if packetResponse.PID == _READ_SIGNAL_QUALITY and packetResponse.GID == PHY:
-            self.RSQ_result.setText("{}%".format(packetResponse.sigQuality))
+            if packetResponse.RID != 0:
+                self.RSQ_result.setText("Result E_IFF")
+            else:
+                self.RSQ_result.setText("{}%".format(packetResponse.sigQuality))
         if packetResponse.PID == _READ_DIAG_RESULT and packetResponse.GID == PHY:
-            self.RSQ_result.setText(PhyDiagResult[packetResponse.diagResult])
+            if packetResponse.RID != 0:
+                self.RDR_result.setText("Result E_IFF")
+            else:
+                self.RDR_result.setText(PhyDiagResult[packetResponse.diagResult])
+        if packetResponse.PID == _ACTIVATE_TEST_MODE and packetResponse.GID == PHY:
+            if packetResponse.RID != 0:
+                self.activateTestmodeResult.setText("Result E_IFF")
+            else:
+                self.activateTestmodeResult.setText("Result {}".format(RESULT[packetResponse.RID]))
+        if packetResponse.PID == _SET_PHY_TX_MODE and packetResponse.GID == PHY:
+            if packetResponse.RID != 0:
+                self.setPHYModeResult.setText("Result E_IFF")
+            else:
+                self.setPHYModeResult.setText("Result {}".format(RESULT[packetResponse.RID]))
         pass
+
     def closeEvent(self, a0: QtGui.QCloseEvent) :
         global RUN
         RUN = False
@@ -141,6 +172,12 @@ class EtmTesterMain(QtWidgets.QMainWindow, Ui_LowerTester):
 
 Etm_CreateBindData = None
 EtmData = None
+
+# Send Data TCF Flag
+sendData_flag = {"PSH":0x08,"URG":0x20,"PSH+URG":0x28}
+tcp_PSH = 0x08
+tcp_URG = 0x20
+tcp_PSHnURG = 0x28
 
 # Standerd Results
 E_OK  = 0x00  # The service primitive has performed successfully
@@ -201,10 +238,58 @@ _READ_SIGNAL_QUALITY  =  0x00 #mandatory
 _READ_DIAG_RESULT     =  0x01 #mandatory
 _ACTIVATE_TEST_MODE   =  0x02 #mandatory
 _SET_PHY_TX_MODE      =  0x03 #mandatory
+
+#ICMPV6
+ECHO_REQUEST = 0x00 #e
 #(m= mandatory, o = optional, e = extension)
 
 # Result of the cable diagnostics:
 PhyDiagResult = ["Cable diagnostic ok","Cable diagnostic failed","Short circuit detected","Open circuit detected"]
+
+def ICMPV6_ECHO_REQUEST():
+    global widget, DataPacket, packetResponse, Shall_i_SEND
+    widget.icmp_result.setText("Result ##")
+    LOG("-----ICMPV6 Echo Request-------")
+    try:
+        addr = ipaddress.ip_address(widget.icmp_destip.text())
+    except:
+        LOG_ERROR("Invalid IPv6 Address")
+        return
+    widget.icmpResponse_console.clear()
+
+    IPlist = addr.exploded
+    IPlist = IPlist.split(':')
+    IPaddrString = ' '.join([str(elem) for elem in IPlist])
+    IPaddrString = '0010' + IPaddrString
+    IPinBytes = bytes.fromhex(IPaddrString)
+
+    Etm_ICMPEcho = EtmPackets.Etm_ICMPEchoRequest()
+    Etm_ICMPEcho.GID = ICMPv6
+    Etm_ICMPEcho.PID = ECHO_REQUEST
+    Etm_ICMPEcho.if_name = widget.icmp_ifname.text()
+    Etm_ICMPEcho.Length = BASE_PACKET_SIZE + 3 + 18+ stringSize(widget.icmp_ifname.text()) + stringSize(widget.icmp_data.text())
+    # 3 = BOM field, + actual text size + 1 = termination field
+    Etm_ICMPEcho.if_name_len = 3 +  stringSize(widget.icmp_ifname.text()) + 1
+    Etm_ICMPEcho.data_size = stringSize(widget.icmp_data.text())
+    Etm_ICMPEcho.data = widget.icmp_data.text()
+    Etm_ICMPEcho.destAddr = IPinBytes
+    LOG("::Etm Close_Socket Data to be sent....")
+    LOG(Etm_ICMPEcho.show(dump=True))
+    DataPacket = Etm_ICMPEcho
+    packetResponse = EtmPackets.Etm
+    Shall_i_SEND = True
+
+    # Trying
+    BPF_filter = "icmp6[icmptype] == icmp6-echo"
+    print(BPF_filter)
+    t = scapy.sendrecv.AsyncSniffer(count=1, store=True, filter=BPF_filter, prn=lambda x: print_ICMP_to_ICMPv6(x),
+                                    iface=widget.interface)
+    t.start()
+    time.sleep(2)
+
+def print_ICMP_to_ICMPv6(x):
+    widget.icmpResponse_console.append("ICMP Request Received from Target")
+    widget.icmpResponse_console.append(x.show(dump=True))
 
 def READ_SIGNAL_QUALITY():
     global widget, DataPacket, packetResponse, Shall_i_SEND
@@ -246,7 +331,7 @@ def ACTIVATE_TEST_MODE():
     global widget, DataPacket, packetResponse, Shall_i_SEND
     OUT = "X%"
     widget.closeSocketResult.setText(OUT)
-    LOG("-----READ_DIAG RESULT-------")
+    LOG("-----ACTIVATE_TEST_MODE-------")
     Etm_PHYTestMode = EtmPackets.Etm_PHYActivateTestMode()
     Etm_PHYTestMode.GID = PHY
     Etm_PHYTestMode.PID = _ACTIVATE_TEST_MODE
@@ -265,11 +350,11 @@ def SET_PHY_TX_MODE():
     global widget, DataPacket, packetResponse, Shall_i_SEND
     OUT = "X%"
     widget.closeSocketResult.setText(OUT)
-    LOG("-----READ_DIAG RESULT-------")
+    LOG("-----ACTIVATE_TEST_MODE-------")
     Etm_PHYTxMode = EtmPackets.Etm_PHYSetTxMode()
     Etm_PHYTxMode.GID = PHY
-    Etm_PHYTxMode.PID = _ACTIVATE_TEST_MODE
-    Etm_PHYTxMode.if_name = widget.activateTest_ifName.text()
+    Etm_PHYTxMode.PID = _SET_PHY_TX_MODE
+    Etm_PHYTxMode.if_name = widget.setPHYTxMode_ifName.text()
     Etm_PHYTxMode.Length = BASE_PACKET_SIZE + 3 + stringSize(widget.activateTest_ifName.text()) + 1
     Etm_PHYTxMode.txMode = widget.CBox_setPHYMode.currentIndex()
     # 3 = BOM field, + actual text size + 1 = termination field
@@ -438,7 +523,11 @@ def _CREATE_AND_BIND(ip,port,bind):
     else:
         CONNECT = TCP
     global Etm_CreateBindData
-    addr = ipaddress.ip_address(ip)
+    try:
+        addr = ipaddress.ip_address(ip)
+    except:
+        LOG_ERROR("Invalid IPv6 Address")
+        return
     IPlist= addr.exploded
     IPlist = IPlist.split(':')
     IPaddrString = ' '.join([str(elem) for elem in IPlist])
@@ -465,20 +554,31 @@ def Send_Data(socketid,dstIp,port,data):
     LOG("-----SendData-------")
     OUT = "Result : ##"
     widget.sendDataResult.setText(OUT)
-    addr = ipaddress.ip_address(dstIp)
-    IPlist = addr.exploded
-    IPlist = IPlist.split(':')
-    IPaddrString = ' '.join([str(elem) for elem in IPlist])
-    IPaddrString = '0010' + IPaddrString
-    IPinBytes = bytes.fromhex(IPaddrString)
 
-    Etm_SendData = EtmPackets.EtmReqSendData()
-    Etm_SendData.GID = _UDP
+    # Set GID as TCP or UDP
+    # If UDP ?
+    if widget.sendData_udp.isChecked() == True:
+        addr = ipaddress.ip_address(dstIp)
+        IPlist = addr.exploded
+        IPlist = IPlist.split(':')
+        IPaddrString = ' '.join([str(elem) for elem in IPlist])
+        IPaddrString = '0010' + IPaddrString
+        IPinBytes = bytes.fromhex(IPaddrString)
+
+        Etm_SendData = EtmPackets.EtmReqSendData()
+        Etm_SendData.GID = _UDP
+        Etm_SendData.destPort = int(port)
+        Etm_SendData.destAddr = IPinBytes
+
+    # If TCP ?
+    if widget.sendData_tcp.isChecked() == True:
+        Etm_SendData = EtmPackets.EtmReqSendData_tcp()
+        Etm_SendData.GID = TCP
+        Etm_SendData.flag = sendData_flag[widget.CBox_sendData_tcp_flag.currentText()]
+
     Etm_SendData.PID = SEND_DATA
     Etm_SendData.socketId = int(socketid)
     Etm_SendData.totalLen = stringSize(data)
-    Etm_SendData.destPort = int(port)
-    Etm_SendData.destAddr = IPinBytes
     Etm_SendData.varDataLen = stringSize(data)
     Etm_SendData.Data = data
     # Etm_SendData.Length = (8 + 2 +2+2+16+2+ stringSize(data))
@@ -494,6 +594,7 @@ def Send_Data(socketid,dstIp,port,data):
     t = scapy.sendrecv.AsyncSniffer(count=1,store=True,filter=BPF_filter,prn = lambda x : print_to_send_console(x),iface=widget.interface)
     t.start()
     time.sleep(2)
+
 def print_to_send_console(x):
     widget.sendDataConsole.append("sport = {}\ndport = {}\nPayload : {}".format(x[UDP].sport,x[UDP].dport,x[Raw].load.hex()))
 

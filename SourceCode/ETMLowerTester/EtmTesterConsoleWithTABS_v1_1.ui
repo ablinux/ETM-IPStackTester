@@ -186,12 +186,12 @@
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
+             <enum>QSizePolicy::Preferred</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>60</width>
-              <height>20</height>
+              <width>40</width>
+              <height>30</height>
              </size>
             </property>
            </spacer>
@@ -233,7 +233,7 @@
           </size>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>11</number>
          </property>
          <widget class="QWidget" name="VersionGet">
           <attribute name="title">
@@ -546,77 +546,63 @@
            <string>Send Data</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="5" rowspan="4">
+           <item row="2" column="8" rowspan="5">
             <widget class="Line" name="line">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Socket ID</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
+           <item row="3" column="1">
             <widget class="QLineEdit" name="sendDataSocId">
              <property name="text">
               <string>0</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="2" colspan="2">
-            <widget class="QLabel" name="label_9">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_10">
              <property name="text">
-              <string>Dest Port</string>
+              <string>Socket ID</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Dest IP</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1" colspan="4">
+           <item row="2" column="1" colspan="7">
             <widget class="QLineEdit" name="sendDataDestIP">
              <property name="text">
               <string>fd53:7cb8:383:e::3aa</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="6">
+           <item row="2" column="9">
             <widget class="QLabel" name="label_17">
              <property name="text">
               <string>Received data:</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1" colspan="4">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Dest IP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" colspan="7">
             <widget class="QLineEdit" name="sendDataData">
              <property name="text">
               <string>ABCDEFGHI</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="4">
-            <widget class="QLineEdit" name="sendDataPort">
-             <property name="text">
-              <string>17185</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
+           <item row="4" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
               <string>Data</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0" rowspan="3" colspan="3">
+           <item row="6" column="0" rowspan="3" colspan="3">
             <widget class="QPushButton" name="Button_sendData">
              <property name="enabled">
               <bool>false</bool>
@@ -626,7 +612,14 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="4">
+           <item row="3" column="7">
+            <widget class="QLineEdit" name="sendDataPort">
+             <property name="text">
+              <string>17185</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="7">
             <widget class="QLabel" name="sendDataResult">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -649,8 +642,55 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="7" rowspan="4">
+           <item row="2" column="10" rowspan="5">
             <widget class="QTextBrowser" name="sendDataConsole"/>
+           </item>
+           <item row="3" column="4">
+            <widget class="QLabel" name="label_tcpflag">
+             <property name="text">
+              <string>TCP Flag</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QRadioButton" name="sendData_udp">
+             <property name="text">
+              <string>UDP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="sendData_tcp">
+             <property name="text">
+              <string>TCP</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="5">
+            <widget class="QComboBox" name="CBox_sendData_tcp_flag">
+             <item>
+              <property name="text">
+               <string>PSH</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>URG</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>PSH+URG</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="3" column="6">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Dest Port</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1194,6 +1234,102 @@
            </property>
           </widget>
          </widget>
+         <widget class="QWidget" name="tab_14">
+          <attribute name="title">
+           <string>ICMPV6</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_41">
+             <property name="text">
+              <string>Network Interface</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="icmp_ifname">
+             <property name="toolTip">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is optional field&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="whatsThis">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;optional&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="text">
+              <string>6</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3" rowspan="5">
+            <widget class="QTextBrowser" name="icmpResponse_console">
+             <property name="html">
+              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Response:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="icmp_destip">
+             <property name="text">
+              <string>FD53:7CB8:0383:E::3AA</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Preferred</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>67</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_42">
+             <property name="text">
+              <string>Dest IP addr</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="icmp_data">
+             <property name="text">
+              <string>Aloha from LowerTester :)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QPushButton" name="Button_icmpEchoRequest">
+             <property name="text">
+              <string>Echo Req</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_43">
+             <property name="text">
+              <string>Data</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="icmp_result">
+             <property name="text">
+              <string>Result ##</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
          <widget class="QWidget" name="tab_7">
           <attribute name="title">
            <string>Shut Down</string>
@@ -1313,6 +1449,9 @@
                  <height>20</height>
                 </rect>
                </property>
+               <property name="text">
+                <string>HCP3_ETHIF_0</string>
+               </property>
               </widget>
               <widget class="QLabel" name="label_33">
                <property name="geometry">
@@ -1366,6 +1505,9 @@
                  <width>113</width>
                  <height>20</height>
                 </rect>
+               </property>
+               <property name="text">
+                <string>HCP3_ETHIF_0</string>
                </property>
               </widget>
               <widget class="QLabel" name="label_36">
@@ -1434,6 +1576,9 @@
                  <height>20</height>
                 </rect>
                </property>
+               <property name="text">
+                <string>HCP3_ETHIF_0</string>
+               </property>
               </widget>
               <widget class="QLabel" name="label_38">
                <property name="geometry">
@@ -1452,7 +1597,7 @@
                <property name="geometry">
                 <rect>
                  <x>110</x>
-                 <y>80</y>
+                 <y>50</y>
                  <width>121</width>
                  <height>23</height>
                 </rect>
@@ -1464,8 +1609,8 @@
               <widget class="QLabel" name="label_35">
                <property name="geometry">
                 <rect>
-                 <x>10</x>
-                 <y>40</y>
+                 <x>260</x>
+                 <y>10</y>
                  <width>51</width>
                  <height>16</height>
                 </rect>
@@ -1477,8 +1622,8 @@
               <widget class="QComboBox" name="CBox_activateTestMode">
                <property name="geometry">
                 <rect>
-                 <x>110</x>
-                 <y>40</y>
+                 <x>340</x>
+                 <y>10</y>
                  <width>201</width>
                  <height>22</height>
                 </rect>
@@ -1514,6 +1659,19 @@
                 </property>
                </item>
               </widget>
+              <widget class="QLabel" name="activateTestmodeResult">
+               <property name="geometry">
+                <rect>
+                 <x>110</x>
+                 <y>90</y>
+                 <width>71</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Result ##</string>
+               </property>
+              </widget>
              </widget>
              <widget class="QWidget" name="tab_13">
               <attribute name="title">
@@ -1522,8 +1680,8 @@
               <widget class="QComboBox" name="CBox_setPHYMode">
                <property name="geometry">
                 <rect>
-                 <x>110</x>
-                 <y>40</y>
+                 <x>350</x>
+                 <y>10</y>
                  <width>181</width>
                  <height>22</height>
                 </rect>
@@ -1547,8 +1705,8 @@
               <widget class="QLabel" name="label_39">
                <property name="geometry">
                 <rect>
-                 <x>10</x>
-                 <y>40</y>
+                 <x>260</x>
+                 <y>10</y>
                  <width>51</width>
                  <height>16</height>
                 </rect>
@@ -1561,7 +1719,7 @@
                <property name="geometry">
                 <rect>
                  <x>110</x>
-                 <y>80</y>
+                 <y>50</y>
                  <width>121</width>
                  <height>23</height>
                 </rect>
@@ -1591,6 +1749,22 @@
                  <width>113</width>
                  <height>20</height>
                 </rect>
+               </property>
+               <property name="text">
+                <string>HCP3_ETHIF_0</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="setPHYModeResult">
+               <property name="geometry">
+                <rect>
+                 <x>110</x>
+                 <y>90</y>
+                 <width>81</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>Result ##</string>
                </property>
               </widget>
              </widget>
@@ -1703,5 +1877,214 @@ p, li { white-space: pre-wrap; }
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>CBox_sendData_tcp_flag</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>111</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_tcpflag</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>92</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>228</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>CBox_sendData_tcp_flag</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>283</x>
+     <y>234</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_tcpflag</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>56</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>211</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_8</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>234</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>258</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>sendDataDestIP</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>47</x>
+     <y>233</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>97</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>sendDataPort</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>226</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>271</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>sendDataPort</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>226</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>282</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>sendDataDestIP</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>187</x>
+     <y>255</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_8</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>119</x>
+     <y>222</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>58</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_9</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>206</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_udp</sender>
+   <signal>clicked()</signal>
+   <receiver>sendDataPort</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>100</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>276</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>sendData_tcp</sender>
+   <signal>clicked()</signal>
+   <receiver>label_9</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>201</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
